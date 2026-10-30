@@ -33,3 +33,5 @@
 .player .poison-status.combat-status{height:auto;min-height:11px;white-space:normal;line-height:1.4}
 
 .controls .sound-volume{display:flex;align-items:center;gap:7px;white-space:nowrap}.sound-volume input{width:85px;min-width:0;accent-color:#cdb7ee;cursor:pointer}.sound-volume output{min-width:30px;font:10px monospace;color:#d9d0e7}@media(max-width:480px){.controls .sound-volume{flex:1;justify-content:flex-end}.sound-volume input{width:80px}}
+
+#skillcut[data-char="15"] img{transform:translateX(-50%)}#skillcut[data-char="16"] img{transform:translateX(-50%)}
