@@ -21,3 +21,6 @@
 .cutin-dock #skillcut.overflow::after{animation:none;transform:scaleX(var(--overflow-progress,1))}
 
 .bomb-slot{border-color:#ffb27977!important;background:#ffb27918!important}.bomb-slot span,.bomb-slot b{color:#ffc69e}.reflect-slot{border-color:#a7d6b277!important;background:linear-gradient(90deg,#a7d6b233 var(--charge,0%),#222c28 var(--charge,0%))!important}.reflect-slot span,.reflect-slot b{color:#bcebc7}#skillcut[data-char="7"] img{transform:translateX(-50%)}#skillcut[data-char="8"] img{transform:translateX(-50%)}
+
+#skillcut[data-char="9"] img{transform:translateX(-50%)}.player .poison-status.fortune-status{color:#ffd0e3;height:auto;min-height:11px;white-space:normal}
+@media(max-width:480px){.cutin-dock #skillcut.overflow[data-char="9"] strong{font-size:16px;line-height:1.3;letter-spacing:1px;margin-top:5px}.cutin-dock #skillcut.overflow[data-char="9"] small{font-size:8px;letter-spacing:2px}}
