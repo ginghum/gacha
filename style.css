@@ -28,3 +28,6 @@
 #skillcut[data-char="10"] img{transform:translateX(-50%)}.skill-slot.sealed{border-color:#90cbed77!important;background:#294450!important;box-shadow:none!important;opacity:.7}.skill-slot.sealed b,.player .poison-status.sealed-status{color:#b0e5ff}.player .poison-status.sealed-status{height:auto;min-height:11px;white-space:normal}
 
 #skillcut[data-char="11"] img{transform:translateX(-50%)}#skillcut[data-char="12"] img{transform:translateX(-50%)}
+
+#skillcut[data-char="13"] img{transform:translateX(-50%)}#skillcut[data-char="14"] img{transform:translateX(-50%)}
+.player .poison-status.combat-status{height:auto;min-height:11px;white-space:normal;line-height:1.4}
