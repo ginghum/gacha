@@ -113,3 +113,12 @@ body.manual-screen{overflow:hidden;overscroll-behavior:none}
 .manual-screen .manual-skill span{font-size:8px;line-height:10px}
 .manual-screen .manual-skill b{font-size:8px;line-height:10px}
 @media(max-height:480px){.manual-screen .arena-wrap{grid-template-rows:78px 34px minmax(0,1fr) 112px}.manual-screen .manual-panel{width:134px;height:112px;padding:3px 7px}.manual-screen .manual-skills{width:120px;gap:4px}.manual-screen .manual-skill{height:51px;min-height:51px;padding:3px 2px}}
+
+
+/* Put the mode toggle beside character selection, without an auto-mode bar. */
+.selection-actions{display:flex;align-items:center;gap:12px;min-width:0}
+.selection-actions #manual-toggle{padding:6px 10px;font-size:10px;line-height:16px;font-weight:700;white-space:nowrap}
+.selection-actions #manual-toggle[aria-pressed="true"]{color:#eadcff;background:#604184;border-color:#c3a1f1}
+.mode-bar{display:none}
+.manual-screen .mode-bar{display:flex}
+@media(max-width:480px){.selection-actions>span{display:none}.selection-actions{gap:0}}

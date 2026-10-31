@@ -491,7 +491,7 @@ function setManualMode(enabled){
  manualMode=!!enabled;clearManualInput();
  document.body.classList.toggle('manual-screen',manualMode);
  $('manual-toggle').setAttribute('aria-pressed',String(manualMode));
- $('manual-toggle').textContent=manualMode?'操作終了':'P1操作 OFF';
+ $('manual-toggle').textContent='P1操作 '+(manualMode?'ON':'OFF');
  $('manual-panel').hidden=!manualMode;
  $('mode-hint').textContent=manualMode?'P1 手動 / P2 オート':'P1・P2 オート';
  canvas.setAttribute('aria-label',roster[selected[0]].name+'と'+roster[selected[1]].name+(manualMode?'の対戦フィールド（P1手動）':'の自動対戦フィールド'));
@@ -538,6 +538,7 @@ function updateManualHUD(){
  }
 }
 $('manual-toggle').onclick=()=>setManualMode(!manualMode);
+$('manual-exit').onclick=()=>setManualMode(false);
 // Activate each finger independently on contact; mobile click can be suppressed
 // while another finger is captured by the joystick. Keep click for keyboard/AT.
 for(let i=0;i<4;i++){
@@ -577,5 +578,6 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
 
