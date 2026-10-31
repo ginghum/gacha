@@ -38,7 +38,7 @@ const roster=[
 ];
 let selected=[0,1],battleToken=0;
 let manualMode=false;
-const manualInput={x:0,y:0,pointer:null,originX:0,originY:0,keys:new Set()};
+const manualInput={target:null,keys:new Set()};
 const nameOf=f=>roster[f.char].name;
 const imgs=roster.map(()=>new Image());
 // Render the catalogue portraits as sprites; the source assets remain unchanged.
@@ -467,7 +467,7 @@ else if(q.kind==='snow'){ctx.translate(q.x,q.y);ctx.rotate(progress*2);for(let i
 else if(q.kind==='charge'){ctx.lineWidth=5;ctx.beginPath();ctx.arc(q.x,q.y,65*(1-progress)+10,0,7);ctx.stroke()}
 else if(q.ring){ctx.lineWidth=6;ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,7);ctx.stroke()}
 else{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,7);ctx.fill()}ctx.restore()}
-ctx.globalAlpha=1;for(const l of labels){ctx.globalAlpha=Math.min(1,l.life*2);ctx.fillStyle=l.c;ctx.strokeStyle='#14202b';ctx.lineWidth=4;ctx.font='900 25px sans-serif';ctx.strokeText(l.text,l.x,l.y);ctx.fillText(l.text,l.x,l.y)}ctx.globalAlpha=1;ctx.restore()}
+drawManualDestination();ctx.globalAlpha=1;for(const l of labels){ctx.globalAlpha=Math.min(1,l.life*2);ctx.fillStyle=l.c;ctx.strokeStyle='#14202b';ctx.lineWidth=4;ctx.font='900 25px sans-serif';ctx.strokeText(l.text,l.x,l.y);ctx.fillText(l.text,l.x,l.y)}ctx.globalAlpha=1;ctx.restore()}
 function drawFighter(f,ghost){const picture=f.char===21&&f.fenrir?fenrirSprite:sprites[f.char];if(!picture)return;if(!ghost&&overflow?.kind==='colossus'&&overflow.owner===f.id){drawColossusFighter(f);return}ctx.save();ctx.translate(f.x,f.y);const lean=clamp((f.mx||0)/1800,-.22,.22);ctx.rotate(lean);if(f.attack>0&&!ghost)ctx.rotate(Math.sin(f.attack*18)*.08);const scale=bodyScale(f),squash=overflow?.kind==='colossus'&&overflow.owner!==f.id&&overflow.t>1.4?.45:1;ctx.save();ctx.scale(scale,scale*squash);ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,32,38,11,0,0,7);ctx.fill();ctx.strokeStyle=colors[f.id];ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,32,41,14,0,0,7);ctx.stroke();ctx.shadowColor=f.slow>0?'#6aeaff':colors[f.id];ctx.shadowBlur=f.hit>0?25:8;ctx.globalAlpha*=f.hp<=0?.3:1;if(f.petrified>0)ctx.filter='grayscale(1) brightness(.75)';ctx.drawImage(picture,-46,-109,92,138);ctx.filter='none';ctx.restore();ctx.shadowBlur=0;if(!ghost&&f.frostRun>0){ringFrozenAura({id:f.id,x:0,y:0},60)}if(!ghost&&stormFor(f)){ctx.save();ctx.strokeStyle=colors[f.id];ctx.shadowColor=colors[f.id];ctx.shadowBlur=reduced?0:18;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-35,54,78,0,0,7);ctx.stroke();for(let n=0;n<5;n++){const a=n*1.25+elapsed*6,x=Math.cos(a)*48,y=Math.sin(a)*60-30;ctx.beginPath();ctx.moveTo(x-10,y-8);ctx.lineTo(x+4,y);ctx.lineTo(x-2,y+8);ctx.stroke()}ctx.restore()}if(!ghost&&f.resinStacks>0){ctx.save();ctx.strokeStyle='#deb8fa';ctx.fillStyle='#d9a7f3';ctx.lineWidth=f.resinBind>0?4:2;ctx.globalAlpha*=f.resinBind>0?.8:.4;for(let n=0;n<Math.min(3,f.resinStacks);n++){ctx.beginPath();ctx.ellipse(0,-20+n*14,45,24,n*.4,0,7);ctx.stroke()}ctx.globalAlpha=.85;ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText('レジン×'+f.resinStacks,0,-140);ctx.restore()}if(!ghost&&Object.values(f.disorder).some(v=>v>0)){ctx.save();ctx.strokeStyle='#a8e8f5';ctx.lineWidth=2;ctx.setLineDash([5,7]);ctx.strokeRect(-52,-115,104,151);ctx.setLineDash([]);for(let n=0;n<3;n++){const y=-100+((elapsed*45+n*41)%130);ctx.beginPath();ctx.moveTo(-58,y);ctx.lineTo(58,y+4);ctx.stroke()}ctx.restore()}if(f.petrified>0&&!ghost)drawStoneCracks();if(f.char===25&&!ghost&&(f.riftEvade>0||f.riftMirror>0))drawRiftGate(0,-30,f.riftMirror>0?65:50,colors[f.id],elapsed);if(f.char===23&&f.diamondBarrier>0&&!ghost)drawMuBarrier(f);if(f.mudBind>0&&!ghost){ctx.save();ctx.fillStyle='#8c6848';ctx.strokeStyle='#d1ac7d';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,10,52,30,0,0,7);ctx.fill();ctx.stroke();ctx.fillStyle='#ead0a7';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('泥拘束',0,-130);ctx.restore()}if(f.char===22&&!ghost){ctx.save();ctx.strokeStyle='#c09a6c';ctx.globalAlpha=f.guard>0?.8:.4;ctx.lineWidth=f.guard>0?9:3;ctx.beginPath();ctx.ellipse(0,-25,52,66,0,0,7);ctx.stroke();ctx.restore()}if(f.rootTime>0&&!ghost){ctx.strokeStyle='#b0dc8a';ctx.lineWidth=3;for(let n=0;n<3;n++){ctx.beginPath();ctx.ellipse(0,-20,48,22,n*.9,0,7);ctx.stroke()}}if(f.char===11&&!ghost&&f.sprouted){ctx.fillStyle='#b0dc8a';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('芽生え / 攻・吸×2 / 防御½',0,-125)}if(f.char===15&&!ghost){ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffe0ac';ctx.fillText('筋力 / 攻+'+f.strength*10+'%',0,-125)}if(f.char===14&&!ghost){ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillStyle=colors[f.id];ctx.fillText('成長 '+f.growth+' / 攻+'+f.growth*8+'%',0,-122*scale)}if(f.char===13&&!ghost&&f.invincible>0){ctx.strokeStyle='#ffd39c';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(0,-30,57,78,0,0,7);ctx.stroke();ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffe2bb';ctx.fillText(f.powerBuff>0?'無敵 / 攻撃×2':'無敵',0,-125)}if(f.char===9&&!ghost){ctx.save();ctx.strokeStyle=f.invincible>0?'#fff6c4':colors[f.id];ctx.lineWidth=f.invincible>0?4:2;ctx.globalAlpha=f.invincible>0?.9:evasionRate(f);ctx.beginPath();ctx.ellipse(0,-35,58,80,0,0,7);ctx.stroke();ctx.restore();ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffd0e3';ctx.fillText(f.invincible>0?'無敵':'EVA '+Math.round(evasionRate(f)*100)+'%',0,-122)}if(isSilenced(f)&&!ghost){ctx.fillStyle='#b0e5ff';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('技封印',0,-145)}if(f.grabbedBy>=0&&!ghost){ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffd0e3';ctx.fillText('拘束',0,-130)}if(f.char===8&&!ghost){ctx.save();ctx.strokeStyle=colors[f.id];ctx.globalAlpha*=f.reflectBoost>0?.9:.35;ctx.lineWidth=f.reflectBoost>0?4:2;ctx.beginPath();ctx.ellipse(0,-30,55,75,0,0,7);ctx.stroke();ctx.beginPath();ctx.moveTo(-32,-80);ctx.lineTo(32,20);ctx.stroke();ctx.restore()}if(f.char===6&&!ghost){ctx.save();ctx.strokeStyle='#b5ffe4';ctx.globalAlpha*=f.regenBoost>0?.85:.3;ctx.lineWidth=f.regenBoost>0?3:1.5;ctx.beginPath();ctx.ellipse(0,10,48,18,0,0,7);ctx.stroke();if(f.regenBoost>0){for(let n=0;n<4;n++){const a=n*Math.PI/2+elapsed,x=Math.cos(a)*48,y=-((elapsed*30+n*23)%120);ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.moveTo(x,y-5);ctx.lineTo(x,y+5);ctx.stroke()}}ctx.restore()}if(f.poisonTime>0){ctx.strokeStyle="#a8ee7c";ctx.fillStyle="#a8ee7c";ctx.lineWidth=2;ctx.globalAlpha*=.8;ctx.beginPath();ctx.ellipse(0,-25,55,60,0,0,7);ctx.stroke();for(let n=0;n<f.poisonStacks;n++){const a=n*1.3+elapsed*1.2;ctx.beginPath();ctx.arc(Math.cos(a)*49,Math.sin(a)*40-25,3,0,7);ctx.fill()}ctx.globalAlpha/= .8}if(f.bind>0){ctx.strokeStyle="#f0b5dd";ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-25,51,32,.5,0,7);ctx.stroke()}if(f.char===4&&!ghost){ctx.fillStyle="#3c3440";ctx.fillRect(-33,-126,66,5);ctx.fillStyle=colors[f.id];ctx.fillRect(-33,-126,66*f.charge,5);ctx.font="9px sans-serif";ctx.textAlign="center";ctx.fillText("CHARGE",0,-132)}if(f.char===2){ctx.save();ctx.strokeStyle=f.guard>0?'#e7efff':colors[f.id];ctx.globalAlpha*=f.guard>0?.8:.35;ctx.lineWidth=f.guard>0?4:2;ctx.beginPath();for(let j=0;j<6;j++){const a=j*Math.PI/3;ctx.lineTo(Math.cos(a)*(f.guard>0?64:48),Math.sin(a)*(f.guard>0?72:55)-30)}ctx.closePath();ctx.stroke();ctx.restore()}if(f.frozen>0){ctx.strokeStyle='#b6f6ff';ctx.lineWidth=3;ctx.strokeRect(-47,-114,94,151)}if(f.burn>0){ctx.strokeStyle='#ff9b60';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,-30,61,0,7);ctx.stroke()}if(!ghost){ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillStyle=colors[f.id];ctx.fillText(nameOf(f)+' · P'+(f.id+1),0,55*scale);if(f.slow>0){ctx.strokeStyle='#b3f7ff';ctx.lineWidth=2;ctx.strokeRect(-37,-42,74,60);ctx.font='10px sans-serif';ctx.fillText('SLOW',0,-135)}}ctx.restore()}
 function frame(t){const raw=Math.min((t-last)/1000||0,.04);last=t;const dt=raw*speed;if(running&&!paused){for(let n=0;n<Math.ceil(dt/.015);n++){if(running)step(dt/Math.ceil(dt/.015))}}if(!paused){for(const q of fx){q.life-=dt;if(q.ring)q.r+=340*dt;else if(q.vx!==undefined){q.x+=q.vx*dt;q.y+=q.vy*dt}}fx=fx.filter(q=>q.life>0);for(const l of labels){l.life-=dt;l.y-=35*dt}labels=labels.filter(l=>l.life>0);for(const tr of trails)tr.life-=dt;trails=trails.filter(tr=>tr.life>0);shake*=.85;cutTimer-=dt;if(cutTimer<=0)$('skillcut').classList.remove('active','overflow');callTimer-=dt;if(callTimer<=0)$('callout').classList.remove('show')}draw();requestAnimationFrame(frame)}
 $('start').onclick=start;$('reset').onclick=reset;$('pause').onclick=()=>{clearManualInput();paused=!paused;updateManualHUD();if(paused)stopSE();if(!document.hidden)playSE(paused?'pause':'resume');$('pause').textContent=paused?'再開':'一時停止';$('status').textContent=paused?'PAUSED':'FIGHTING'};$('speed').onchange=e=>setPlaybackSpeed(+e.target.value);$('sound').onclick=()=>{sound=!sound;$('sound').textContent='音 '+(sound?'ON':'OFF');$('sound').setAttribute('aria-pressed',sound);try{window.ArenaSound?.setVolume(soundVolume);window.ArenaSound?.setEnabled(sound)}catch{}if(sound)playSE('ui')};$('volume').oninput=e=>{soundVolume=Math.max(0,Math.min(1,Number(e.target.value)/100));$('volume-value').textContent=Math.round(soundVolume*100)+'%';try{window.ArenaSound?.setVolume(soundVolume)}catch{}};document.addEventListener('visibilitychange',()=>{if(document.hidden&&running&&!paused)$('pause').click()});requestAnimationFrame(frame);
@@ -482,11 +482,7 @@ setPlaybackSpeed(speed);
 
 
 // P1 control mode: movement and skills are manual; basic attacks stay automatic.
-function clearManualInput(){
- const surface=$('play-surface'),pointer=manualInput.pointer;
- manualInput.pointer=null;manualInput.x=manualInput.y=0;manualInput.keys.clear();
- if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer);
-}
+function clearManualInput(){manualInput.target=null;manualInput.keys.clear()}
 function setManualMode(enabled){
  manualMode=!!enabled;clearManualInput();
  document.body.classList.toggle('manual-screen',manualMode);
@@ -503,15 +499,32 @@ function manualVector(){
  const k=manualInput.keys;
  let x=Number(k.has('ArrowRight')||k.has('d'))-Number(k.has('ArrowLeft')||k.has('a'));
  let y=Number(k.has('ArrowDown')||k.has('s'))-Number(k.has('ArrowUp')||k.has('w'));
- if(!x&&!y){x=manualInput.x;y=manualInput.y}
  const length=Math.hypot(x,y);return length>1?{x:x/length,y:y/length}:{x,y};
+}
+function manualDestination(f,x,y){
+ const scale=bodyScale(f),margin=f.char===14?Math.max(55,46*scale+8):55;
+ return {x:clamp(x,margin,W-margin),y:clamp(y,f.char===14?Math.max(135,109*scale+10):135,f.char===14?Math.min(H-65,H-32*scale-15):H-65)};
 }
 function moveManual(f,dt){
  const input=manualVector();
  let v=470*roster[f.char].speed*(f.char===21&&f.fenrir?1.15:1)*motorRate(f);
  if(f.slow>0)v*=.65;if(f.bind>0)v*=.3;if(f.windup>0)v*=.35;
  f.mx=input.x*v;f.my=input.y*v;
+ if(input.x||input.y)manualInput.target=null;
+ else if(manualInput.target){
+  const target=manualDestination(f,manualInput.target.x,manualInput.target.y);
+  manualInput.target=target;
+  const dx=target.x-f.x,dy=target.y-f.y,distance=Math.hypot(dx,dy);
+  const travel=Math.min(v*dt,distance);
+  f.mx=distance?dx/distance*travel/dt:0;f.my=distance?dy/distance*travel/dt:0;
+  if(distance<=v*dt)manualInput.target=null;
+ }
  f.x+=(f.mx+f.vx)*dt;f.y+=(f.my+f.vy)*dt;
+}
+function drawManualDestination(){
+ const point=manualInput.target;if(!manualMode||!running||!point)return;
+ ctx.save();ctx.globalAlpha=.8;ctx.strokeStyle=colors[0];ctx.lineWidth=2;
+ ctx.beginPath();ctx.arc(point.x,point.y,12,0,Math.PI*2);ctx.moveTo(point.x-5,point.y);ctx.lineTo(point.x+5,point.y);ctx.moveTo(point.x,point.y-5);ctx.lineTo(point.x,point.y+5);ctx.stroke();ctx.restore();
 }
 function manualCanAct(f){return !!(manualMode&&f&&running&&!paused&&!overflow&&f.hp>0&&!f.overflowQueued&&!isSilenced(f)&&f.petrified<=0&&f.frozen<=0&&f.resinBind<=0&&f.mudBind<=0&&!f.grapple&&f.grabbedBy<0&&f.windup<=0)}
 function manualSkillReady(f,i){
@@ -540,7 +553,7 @@ function updateManualHUD(){
 $('manual-toggle').onclick=()=>setManualMode(!manualMode);
 $('manual-exit').onclick=()=>setManualMode(false);
 // Activate each finger independently on contact; mobile click can be suppressed
-// while another finger is captured by the joystick. Keep click for keyboard/AT.
+// during other touch input. Keep click for keyboard/AT.
 for(let i=0;i<4;i++){
  const button=$('manual-skill'+i);
  button.addEventListener('pointerdown',event=>{
@@ -550,20 +563,20 @@ for(let i=0;i<4;i++){
  button.onclick=event=>{if(event.detail===0)useManualSkill(i)};
 }
 const playSurface=$('play-surface');
-function readPlayDrag(event){
- const radius=42,dx=event.clientX-manualInput.originX,dy=event.clientY-manualInput.originY;
- const distance=Math.hypot(dx,dy),scale=distance>radius?radius/distance:1;
- manualInput.x=distance<5?0:dx*scale/radius;
- manualInput.y=distance<5?0:dy*scale/radius;
+function fieldTapPoint(clientX,clientY){
+ // The canvas is fitted with object-fit:contain: ignore the letterbox margins.
+ const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width/W,rect.height/H);
+ if(!(scale>0))return null;
+ const x=(clientX-rect.left-(rect.width-W*scale)/2)/scale;
+ const y=(clientY-rect.top-(rect.height-H*scale)/2)/scale;
+ return x<0||x>W||y<0||y>H?null:{x,y};
 }
 playSurface.addEventListener('pointerdown',event=>{
- if(!manualMode||!running||paused||manualInput.pointer!==null||event.button>0||event.target.closest('button,a,input,select,textarea,label,[contenteditable="true"]'))return;
- event.preventDefault();manualInput.pointer=event.pointerId;
- manualInput.originX=event.clientX;manualInput.originY=event.clientY;
- manualInput.x=manualInput.y=0;playSurface.setPointerCapture(event.pointerId);
+ if(!manualMode||!running||paused||event.button>0||event.target.closest('button,a,input,select,textarea,label,[contenteditable="true"]'))return;
+ const point=fieldTapPoint(event.clientX,event.clientY);if(!point)return;
+ event.preventDefault();manualInput.keys.clear();
+ manualInput.target=manualDestination(fighters[0],point.x,point.y);
 });
-playSurface.addEventListener('pointermove',event=>{if(event.pointerId===manualInput.pointer){event.preventDefault();readPlayDrag(event)}});
-for(const type of ['pointerup','pointercancel','lostpointercapture'])playSurface.addEventListener(type,event=>{if(event.pointerId===manualInput.pointer)clearManualInput()});
 $('manual-pause').onclick=()=>$('pause').click();
 $('manual-reset').onclick=reset;
 const manualSkillKeys={'1':0,'2':1,'3':2,'4':3,j:0,k:1,l:2,' ':3};
@@ -572,12 +585,13 @@ document.addEventListener('keydown',event=>{
  if(manualMode&&event.key==='Escape'){event.preventDefault();setManualMode(false);return}
  if(!manualMode||!running||paused||event.altKey||event.ctrlKey||event.metaKey||['INPUT','SELECT','TEXTAREA'].includes(event.target?.tagName)||event.target?.isContentEditable)return;
  const key=event.key.length===1?event.key.toLowerCase():event.key;
- if(movementKeys.has(key)){event.preventDefault();manualInput.keys.add(key)}
+ if(movementKeys.has(key)){event.preventDefault();manualInput.target=null;manualInput.keys.add(key)}
  else if(Object.prototype.hasOwnProperty.call(manualSkillKeys,key)){event.preventDefault();if(!event.repeat)useManualSkill(manualSkillKeys[key])}
 });
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
 
 
