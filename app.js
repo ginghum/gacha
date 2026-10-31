@@ -23,7 +23,7 @@ const roster=[
  {key:'yuji',name:'ユージ',code:'AIR REPULSION',grade:1,ability:'空中でものを弾く / 長射程型',color:'#90cbed',attack:.7,defense:1,speed:1,overflow:true,overflowText:'全域反発空間',overflowDesc:'HP30%以下で1戦に1回。5秒間、フィールド全体に約0.06秒ごとの小ダメージを発生させる。相手は通常技・オーバーフロウを使用できない。移動と通常攻撃は可能。効果中にHP30%以下になった相手のOFは、解除後に発動する。',descs:['離れた相手を狙い、空中の小物を2回弾き飛ばす。射程は長いが威力は控えめ。','空中で弾いた小物を5方向へ飛ばす。1発ごとの威力は低い。','前方へ広い反発波を放つ。離れた相手にも届くが、大技としては威力が低め。']},
  {key:'yaoi',name:'ヤオイ',maxHp:800,overflowRatio:.01,code:'NATURE ASSIMILATION',grade:5,ability:'自然と化す / 吸収・拘束型',color:'#b0dc8a',attack:.75,defense:1,speed:.98,overflow:true,overflowText:'芽生え',overflowDesc:'HP1%以下で1戦に1回。残り8HPで踏みとどまり「芽生え」が発動。800HPまで全回復し、以後は攻撃力・同条件での吸収回復量が2倍。防御力は半分（被ダメージ2倍）。技封印中は発動・踏みとどまり不可。',descs:['蔓を伸ばして攻撃し、与えたダメージの24%を吸収。相手を短時間拘束。','相手の進路へ根を張り、範囲内の相手を拘束。根は0.4秒ごとにダメージを与え、その30%を吸収する。','吸収する種子を6方向へ発射。命中した相手を根で拘束し、与えたダメージの30%を吸収する。']},
  {key:'ojo',name:'オジョー',code:'EXPLOSIVE BULLETS',grade:5,ability:'爆発弾を操る / 超連射型',color:'#ffb4c9',attack:.715,defense:1,speed:1.04,overflow:true,overflowText:'絢爛爆華砲',overflowDesc:'HP30%以下で1戦に1回。爆発弾を収束し、ピンクと金の爆華をまとった極太ビームを放つ。予告線で狙いを定め、発射方向を固定。ビームに触れた相手へ8回の連続爆発ダメージ。範囲外には当たらない。',descs:['爆発弾を12連射。高速の弾幕で相手の進路を追う。','5方向への爆発弾を3波連射し、広範囲を覆う。','24発の爆発弾を高速連射。1発の威力よりも手数で押し切る。']},
- {key:'gumon',name:'グモン',code:'INVINCIBILITY',grade:5,ability:'無敵になる / 体術型',color:'#e6a174',attack:.75,defense:.95,speed:1.04,overflow:true,overflowText:'無敵の頂点',overflowDesc:'HP30%以下で1戦に1回。5秒間、無敵＋攻撃力2倍。通常攻撃と技1〜3のCT回復速度も2倍になり、次の攻撃・技を早く使える。',descs:['能力を使わず踏み込み、拳で4連打。','接近して重い体術の一撃を叩き込み、相手を吹き飛ばす。','2.2秒間、無敵になる。ダメージ・毒のダメージ・反射を防ぐ。']},
+ {key:'gumon',name:'グモン',code:'INVINCIBILITY',grade:5,ability:'無敵になる / 体術型',color:'#e6a174',attack:.75,defense:.95,speed:1.04,overflow:true,overflowText:'無敵の頂点',overflowDesc:'HP30%以下で1戦に1回。5秒間、無敵＋攻撃力2倍。通常攻撃と技1〜3のCT回復速度も2倍になり、次の攻撃・技を早く使える。技1・2の攻撃範囲も広がり、近くの敵や分身をまとめて攻撃する。',descs:['能力を使わず踏み込み、拳で4連打。OF中は届く距離が約20%広がり、近くの敵も巻き込む。','接近して重い体術の一撃を叩き込み、相手を吹き飛ばす。OF中は自分の周囲240以内の敵にも当たる。','2.2秒間、無敵になる。ダメージ・毒のダメージ・反射を防ぐ。']},
  {key:'kagachi',name:'カガチ',maxHp:2000,code:'GIGANTIFICATION',grade:5,ability:'巨大化 / 成長型',color:'#f4bd72',attack:.55,defense:1,speed:.87,overflow:true,overflowText:'圧倒的巨躯',overflowDesc:'HP30%以下で1戦に1回。数秒間、フィールドと同じ大きさまで巨大化し、相手を押しつぶして連続ダメージ。技を使うたびに巨大化が蓄積し、1回につき攻撃力+8%・被ダメージ+6%。',descs:['巨大化しながら接近。大きな腕で2回殴る。','体をさらに膨らませて突進し、相手を吹き飛ばす。','大きく踏みつけて周囲へ衝撃波を放つ。']},
  {key:'masa',name:'マサ',code:'MUSCLE ASCENT',grade:4,ability:'筋力が上昇する / 累積強化・体術型',color:'#ebbc77',attack:.66,defense:1,speed:1.04,overflow:false,passiveLabel:'筋力上昇 / OFなし',overflowText:'正義の筋力',overflowDesc:'オーバーフロウなし。通常技を使うたびに攻撃力が10%ずつ上昇し、その技から適用される。強化は上限なく累積し、戦闘終了まで持続。通常攻撃も強くなる。',descs:['踏み込んで拳を4連打。攻撃力の上昇を重ねる。','筋力を乗せた突進で相手を殴り飛ばす。','力を溜め、追いすがる重い一撃を叩き込む。']},
  {key:'zenomura',name:'ゼノムラ',code:'PHANTOM KNIVES',grade:4,ability:'幻覚を見せる / 幻影・ナイフ型',color:'#c8b5ed',attack:.504,defense:1,speed:1.08,overflow:false,passiveLabel:'幻影誘導 / OFなし',overflowText:'虚像の誘い',overflowDesc:'オーバーフロウなし。幻影がいる間、相手の移動・通常攻撃・通常技の狙いを幻影にそらす。幻影には当たり判定も攻撃力もなく、弾は通り抜ける。本体への流れ弾・範囲攻撃・全域攻撃・付与済みの毒などは防げない。',descs:['3秒間、幻影を1体召喚。狙いをそらしながらナイフで3連斬り。','3.8秒間、幻影を2体召喚。相手を狙ってナイフを5連投する。','4秒間、幻影を3体召喚。回り込んでナイフで2度斬りつける。']},
@@ -88,6 +88,17 @@ function drawIllusions(){for(const v of illusions){ctx.save();ctx.globalAlpha=.4
 const DISORDER_NAMES={weak:'攻撃↓',motor:'移動失調',lag:'再使用遅延',fragile:'防御↓',poison:'毒',burn:'火傷'};
 function motorRate(f){return f.chaos?.motor>0?.3:f.disorder?.motor>0?.6:1}
 function gumonOverflowActive(f){return f.char===13&&f.invincible>0&&f.powerBuff>0}
+function gumonSkillStrike(f,target,damage,radius,color,knockback,impact,life,limitNormal){
+ if(!running||f.hp<=0)return;
+ const boosted=gumonOverflowActive(f),reach=radius*(boosted?1.2:1);
+ if(!boosted&&limitNormal&&Math.hypot(target.x-f.x,target.y-f.y)>=reach)return;
+ const targets=boosted?crowdOverflowTargets(f.id).filter(v=>Math.hypot(v.x-f.x,v.y-f.y)<reach):[target];
+ for(const victim of targets){
+  if(!running)break;
+  hit(victim,damage,f,color);victim.vx*=knockback;victim.vy*=knockback;
+  ring(victim.x,victim.y-30,color,impact*(boosted?1.2:1),'impact',life);
+ }
+}
 function recoveryRate(f){if(f.petrified>0)return 0;const rate=f.chaos?.lag>0?.25:f.disorder?.lag>0?.6:1;return rate*(gumonOverflowActive(f)?2:1)}
 function tickDisorder(f,dt){for(const states of [f.disorder,f.chaos])for(const key of Object.keys(states))states[key]=Math.max(0,states[key]-dt)}
 function mechanismBeam(f,e,c){fx.push({x:f.x,y:f.y-35,tx:e.x,ty:e.y-30,c,r:3,kind:'beam',life:.25,max:.25});ring(e.x,e.y-30,c,45,'glitch',.35)}
@@ -229,8 +240,8 @@ function cast(f,i){if(!running||isSilenced(f)||f.petrified>0||f.resinBind>0||f.m
   else if(i===1){for(let wave=0;wave<3;wave++)schedule(wave*.13,()=>{for(let n=-2;n<=2;n++)explosiveBullet(f,e,13,n*.16)})}
   else{for(let n=0;n<24;n++)schedule(n*.045,()=>explosiveBullet(f,e,11,(n%5-2)*.025))}
  }else if(f.char===13){
-  if(i===0){dash(f,e,60,()=>{f.follow=.7;for(let n=0;n<4;n++)schedule(n*.15,()=>{if(Math.hypot(e.x-f.x,e.y-f.y)<185){hit(e,33,f,c);e.vx*=.3;e.vy*=.3;ring(e.x,e.y-30,c,20,'impact',.35)}})})}
-  else if(i===1){dash(f,e,55,()=>{hit(e,130,f,c);e.vx*=2.5;e.vy*=2.5;ring(e.x,e.y-30,c,55,'impact',.7)})}
+  if(i===0){dash(f,e,60,()=>{f.follow=.7;for(let n=0;n<4;n++)schedule(n*.15,()=>gumonSkillStrike(f,e,33,185,c,.3,20,.35,true))})}
+  else if(i===1){dash(f,e,55,()=>gumonSkillStrike(f,e,130,200,c,2.5,55,.7,false))}
   else{f.invincible=Math.max(f.invincible,2.2);ring(f.x,f.y-30,c,68,'shield',.7)}
  }else if(f.char===14){
   if(i===0){dash(f,e,85,()=>{f.follow=.4;for(let n=0;n<2;n++)schedule(n*.23,()=>{if(Math.hypot(e.x-f.x,e.y-f.y)<240*bodyScale(f)){hit(e,52,f,c);ring(e.x,e.y-25,c,45*bodyScale(f),'impact',.5)}})})}
@@ -658,6 +669,7 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
 
 
