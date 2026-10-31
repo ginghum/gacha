@@ -345,8 +345,8 @@ function orderHattanClones(f,duration){
  playSE('charge',f);log(nameOf(f)+'：分身全員で集団リンチ！');
 }
 function drawHattanHorde(o){
- const f=fighters[o.owner];ctx.save();ctx.strokeStyle=o.color;ctx.globalAlpha=.25+o.t*.6;ctx.lineWidth=2;
- for(let n=0;n<8;n++){const angle=n*Math.PI/4+o.t*.8,x=f.x+Math.cos(angle)*(65+o.t*70),y=f.y+Math.sin(angle)*(55+o.t*60);ctx.drawImage(sprites[26],x-28,y-90,56,84);ctx.beginPath();ctx.ellipse(x,y,30,11,0,0,Math.PI*2);ctx.stroke()}
+ const f=fighters[o.owner];ctx.save();ctx.strokeStyle=cloneRingColor(f.id);ctx.globalAlpha=.25+o.t*.6;ctx.lineWidth=2;
+ for(let n=0;n<8;n++){const angle=n*Math.PI/4+o.t*.8,x=f.x+Math.cos(angle)*(65+o.t*70),y=f.y+Math.sin(angle)*(55+o.t*60);ctx.drawImage(sprites[26],x-46,y-109,92,138);ctx.beginPath();ctx.ellipse(x,y+32,41,14,0,0,Math.PI*2);ctx.stroke()}
  ctx.restore();
 }
 function hitDiamondSoldier(v,damage,from,c,slow,dot){if(!running||v.hp<=0||v.life<=0||from.hp<=0)return false;const d=Math.round(damage*attackScale(from)*stoneDefense(v)*(v.chaos.fragile>0?1.5:v.disorder.fragile>0?1.2:1)*(.85+Math.random()*.3));v.hp=Math.max(0,v.hp-d);v.slow=Math.max(v.slow,slow);v.hit=.2;labels.push({x:v.x,y:v.y-95,text:(v.hattanClone?'分身 −':'兵士 −')+d,c:colors[v.owner],life:.65});ring(v.x,v.y-25,v.hattanClone?colors[v.owner]:'#d8f2ff',20,'impact',.3);if(v.hp<=0){burst(v.x,v.y-30,v.hattanClone?colors[v.owner]:'#d8f2ff',16);playSE(v.hattanClone?'air':'metal',from)}return true}
@@ -359,7 +359,32 @@ function diamondSoldierTarget(v){const e=fighters[1-v.owner],clones=illusions.fi
  }
  return clones.length?clones.reduce((a,b)=>Math.hypot(a.x-v.x,a.y-v.y)<Math.hypot(b.x-v.x,b.y-v.y)?a:b):e}
 function diamondProjectileTarget(s,ax,ay){const enemy=fighters[1-s.owner];let target=enemy,nearest=Infinity;for(const v of [enemy,...diamondSoldiers.filter(v=>v.owner!==s.owner&&v.hp>0&&v.life>0)]){const rx=ax-v.prevX,ry=ay-v.prevY+20,dx=(s.x-ax)-(v.x-v.prevX),dy=(s.y-ay)-(v.y-v.prevY),den=dx*dx+dy*dy,u=den?clamp(-(rx*dx+ry*dy)/den,0,1):0;if(Math.hypot(rx+dx*u,ry+dy*u)<=hurtRadius(v)+s.r&&u<nearest){target=v;nearest=u}}return target}
-function drawDiamondSoldiers(){for(const v of diamondSoldiers){if(v.hp<=0)continue;ctx.save();ctx.translate(v.x,v.y);ctx.globalAlpha=Math.min(1,v.life/.4);ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,24,29,8,0,0,7);ctx.fill();ctx.strokeStyle=colors[v.owner];ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,24,32,10,0,0,7);ctx.stroke();ctx.shadowColor=v.order>0?'#f3d0ff':v.hattanClone?colors[v.owner]:'#a4e9ff';ctx.shadowBlur=reduced?0:8;ctx.rotate(v.attack>0?Math.sin(v.attack*20)*.1:clamp(v.mx/2500,-.12,.12));if(v.petrified>0)ctx.filter='grayscale(1) brightness(.75)';ctx.drawImage(v.hattanClone?sprites[26]:soldierImg,-36,-82,72,108);ctx.filter='none';ctx.shadowBlur=0;ctx.fillStyle='#243546';ctx.fillRect(-27,-94,54,4);ctx.fillStyle=colors[v.owner];ctx.fillRect(-27,-94,54*v.hp/v.maxHp,4);ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText((v.hattanClone?(v.hordeClone?'OF分身 P':'分身 P'):'兵士 P')+(v.owner+1)+(v.order>0?' / 強化':''),0,40);ctx.restore()}}
+function cloneRingColor(owner){
+ const hex=colors[owner].slice(1),r=parseInt(hex.slice(0,2),16)/255,g=parseInt(hex.slice(2,4),16)/255,b=parseInt(hex.slice(4,6),16)/255;
+ const high=Math.max(r,g,b),low=Math.min(r,g,b),delta=high-low,light=(high+low)/2;
+ const hue=delta?(high===r?((g-b)/delta+6)%6:high===g?(b-r)/delta+2:(r-g)/delta+4)*60:0;
+ const saturation=delta?delta/(1-Math.abs(2*light-1)):0;
+ return 'hsl('+((hue+24)%360)+' '+(saturation*100)+'% '+(light*100)+'%)';
+}
+function drawDiamondSoldiers(){
+ for(const v of diamondSoldiers){
+  if(v.hp<=0)continue;
+  const clone=!!v.hattanClone,ground=clone?32:24,barWidth=clone?66:54,barY=clone?-124:-94;
+  ctx.save();ctx.translate(v.x,v.y);ctx.globalAlpha=Math.min(1,v.life/.4);
+  ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,ground,clone?38:29,clone?11:8,0,0,7);ctx.fill();
+  ctx.strokeStyle=clone?cloneRingColor(v.owner):colors[v.owner];ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(0,ground,clone?41:32,clone?14:10,0,0,7);ctx.stroke();
+  ctx.shadowColor=v.order>0?'#f3d0ff':clone?colors[v.owner]:'#a4e9ff';ctx.shadowBlur=reduced?0:8;
+  ctx.rotate(v.attack>0?Math.sin(v.attack*20)*.1:clamp(v.mx/2500,-.12,.12));
+  if(v.petrified>0)ctx.filter='grayscale(1) brightness(.75)';
+  if(clone)ctx.drawImage(sprites[26],-46,-109,92,138);
+  else ctx.drawImage(soldierImg,-36,-82,72,108);
+  ctx.filter='none';ctx.shadowBlur=0;ctx.fillStyle='#243546';ctx.fillRect(-barWidth/2,barY,barWidth,4);
+  ctx.fillStyle=colors[v.owner];ctx.fillRect(-barWidth/2,barY,barWidth*v.hp/v.maxHp,4);
+  ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText((clone?(v.hordeClone?'OF分身 P':'分身 P'):'兵士 P')+(v.owner+1)+(v.order>0?' / 強化':''),0,clone?55:40);
+  ctx.restore();
+ }
+}
 function drawMuBarrier(f){ctx.save();ctx.strokeStyle='#bcefff';ctx.fillStyle='#d1dfff';ctx.globalAlpha=.14;ctx.beginPath();for(let n=0;n<6;n++){const a=n*Math.PI/3-Math.PI/6;ctx.lineTo(Math.cos(a)*61,Math.sin(a)*79-30)}ctx.closePath();ctx.fill();ctx.globalAlpha=.65;ctx.lineWidth=3;ctx.stroke();for(let n=0;n<3;n++){ctx.beginPath();ctx.moveTo(Math.cos(n*2.1)*61,Math.sin(n*2.1)*79-30);ctx.lineTo(0,-30);ctx.stroke()}ctx.restore()}
 function initDiamondMeteor(o){const e=fighters[1-o.owner],cx=clamp(e.x+(e.mx||0)*.2,100,W-100),cy=clamp(e.y+(e.my||0)*.2,180,H-100);o.meteors=[[0,0],[-120,-80],[120,-80],[-110,90],[110,90],[0,0]].map(([x,y],i)=>({x:clamp(cx+x,65,W-65),y:clamp(cy+y,135,H-65),r:i===5?170:130,at:1+i*.28,damage:i===5?175:85,done:false}))}
 function tickDiamondMeteor(o){const f=fighters[o.owner],e=fighters[1-o.owner];for(const m of o.meteors){if(!running)break;if(m.done||o.t<m.at)continue;m.done=true;ring(m.x,m.y-20,'#e3edff',m.r*.4,'impact',.65);burst(m.x,m.y-25,'#d6ebff',25);playSE('ultimate-impact',f);shake=reduced?0:12;for(const target of [e,...diamondSoldiers.filter(v=>v.owner!==f.id&&v.hp>0)]){if(!running)break;if(Math.hypot(target.x-m.x,target.y-m.y)<m.r+hurtRadius(target))hit(target,m.damage,f,o.color,.4,false,'diamond')}}if(o.t>=o.duration||!running){overflow=null;$('skillcut').classList.remove('overflow');clearMotion()}}
@@ -632,6 +657,7 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
 
 
