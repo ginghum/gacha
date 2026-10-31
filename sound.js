@@ -39,6 +39,9 @@ class ArenaSoundEngine{
  case 'charge':tone(85,280,.45,.14,'sawtooth');noise(.35,.07,650,'bandpass');break;
  case 'growth':tone(65,105,.38,.2);noise(.22,.1,380);break;
  case 'air':noise(.16,.13,2100,'bandpass');tone(420,850,.12,.07,'triangle');break;
+ case 'thunder-kick':noise(.12,.09,2200,'highpass');tone(430,120,.13,.1,'triangle');break;
+ case 'thunder-shot':tone(170,880,.22,.1,'sawtooth');noise(.13,.09,2700,'highpass');break;
+ case 'thunder-crash':noise(.35,.17,2100);tone(85,32,.4,.18);tone(1800,650,.13,.09,'triangle');break;
  case 'thunder':noise(.16,.12,3000,'highpass');tone(110,45,.2,.13,'sawtooth');tone(1700,650,.09,.07,'triangle');break;
  case 'resin':noise(.15,.08,800,'bandpass');tone(420,160,.18,.08,'triangle');break;
  case 'cure':[660,990,1320].forEach((n,i)=>tone(n,n*1.2,.18,.07,'triangle',i*.045));noise(.12,.06,3200,'highpass');break;
