@@ -101,3 +101,15 @@ body.manual-screen{overflow:hidden;overscroll-behavior:none}
 .manual-screen .manual-skill b{font-size:10px;line-height:12px}
 .manual-screen .manual-panel p{margin:0;text-align:center;font-size:8px;line-height:11px}
 @media(max-height:480px){.manual-screen .arena-wrap{grid-template-rows:78px 34px minmax(0,1fr) 87px}.manual-screen .manual-panel{padding:4px 10px;gap:3px}.manual-screen .manual-heading{display:none}.manual-screen .manual-skill{height:61px}.manual-screen .manual-panel p{font-size:7px}}
+
+/* Compact skill cluster at the bottom right of the play screen. */
+.manual-screen .arena-wrap{grid-template-rows:78px 38px minmax(0,1fr) 132px}
+.manual-screen .manual-panel{justify-self:end;align-self:end;width:146px;height:132px;padding:5px 8px;gap:0;background:transparent;border:0}
+.manual-screen .manual-heading,.manual-screen .manual-panel p{display:none}
+.manual-screen .manual-skills{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:130px}
+.manual-screen .manual-skill{height:58px;min-height:58px;padding:4px 3px;gap:1px;border-radius:7px}
+.manual-screen .manual-skill small{font-size:7px;line-height:9px}
+.manual-screen .manual-skill kbd{margin-left:2px}
+.manual-screen .manual-skill span{font-size:8px;line-height:10px}
+.manual-screen .manual-skill b{font-size:8px;line-height:10px}
+@media(max-height:480px){.manual-screen .arena-wrap{grid-template-rows:78px 34px minmax(0,1fr) 112px}.manual-screen .manual-panel{width:134px;height:112px;padding:3px 7px}.manual-screen .manual-skills{width:120px;gap:4px}.manual-screen .manual-skill{height:51px;min-height:51px;padding:3px 2px}}
