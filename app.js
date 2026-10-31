@@ -537,7 +537,16 @@ function updateManualHUD(){
  }
 }
 $('manual-toggle').onclick=()=>setManualMode(!manualMode);
-for(let i=0;i<4;i++)$('manual-skill'+i).onclick=()=>useManualSkill(i);
+// Activate each finger independently on contact; mobile click can be suppressed
+// while another finger is captured by the joystick. Keep click for keyboard/AT.
+for(let i=0;i<4;i++){
+ const button=$('manual-skill'+i);
+ button.addEventListener('pointerdown',event=>{
+  if(event.button>0||button.disabled)return;
+  event.preventDefault();useManualSkill(i);
+ });
+ button.onclick=event=>{if(event.detail===0)useManualSkill(i)};
+}
 const moveStick=$('move-stick');
 function readStick(event){
  const rect=moveStick.getBoundingClientRect(),radius=rect.width*.32;
@@ -563,3 +572,4 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
