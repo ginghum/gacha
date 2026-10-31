@@ -38,6 +38,8 @@ class ArenaSoundEngine{
  case 'charge':tone(85,280,.45,.14,'sawtooth');noise(.35,.07,650,'bandpass');break;
  case 'growth':tone(65,105,.38,.2);noise(.22,.1,380);break;
  case 'air':noise(.16,.13,2100,'bandpass');tone(420,850,.12,.07,'triangle');break;
+ case 'resin':noise(.15,.08,800,'bandpass');tone(420,160,.18,.08,'triangle');break;
+ case 'cure':[660,990,1320].forEach((n,i)=>tone(n,n*1.2,.18,.07,'triangle',i*.045));noise(.12,.06,3200,'highpass');break;
  case 'malfunction':[730,420,980].forEach((n,i)=>tone(n,n*.7,.075,.075,'square',i*.045));noise(.08,.055,2400,'bandpass');break;
  case 'field-tick':tone(900,1200,.05,.035,'sine');noise(.035,.03,2500,'highpass');break;
  case 'skill':{const n=300+(character%5)*70;tone(n,n*1.5,.22,.11,'triangle');tone(n*2,n*2,.16,.07,'sine',.07);break}
