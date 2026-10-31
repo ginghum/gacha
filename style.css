@@ -46,3 +46,7 @@
 #skillcut[data-char="20"] img{transform:translateX(-50%)}
 
 #skillcut[data-char="21"] img{transform:translateX(-50%)}#skillcut[data-char="21"][data-form="fenrir"] img{transform:translateX(-68%)}
+
+/* Reserve three status lines even when empty; clip any additional lines. */
+.score .player>div{min-width:0}
+.score .player .poison-status{display:block;height:42px;min-height:42px;max-height:42px;line-height:14px;margin:4px 0 0;white-space:normal;overflow-wrap:anywhere;overflow:hidden}
