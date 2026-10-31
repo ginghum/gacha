@@ -38,12 +38,14 @@ class ArenaSoundEngine{
  case 'charge':tone(85,280,.45,.14,'sawtooth');noise(.35,.07,650,'bandpass');break;
  case 'growth':tone(65,105,.38,.2);noise(.22,.1,380);break;
  case 'air':noise(.16,.13,2100,'bandpass');tone(420,850,.12,.07,'triangle');break;
+ case 'malfunction':[730,420,980].forEach((n,i)=>tone(n,n*.7,.075,.075,'square',i*.045));noise(.08,.055,2400,'bandpass');break;
  case 'field-tick':tone(900,1200,.05,.035,'sine');noise(.035,.03,2500,'highpass');break;
  case 'skill':{const n=300+(character%5)*70;tone(n,n*1.5,.22,.11,'triangle');tone(n*2,n*2,.16,.07,'sine',.07);break}
- default:if(type.startsWith('of-')){const k=type.slice(3);tone(60,95,.6,.17);if(k==='blackhole'){tone(220,28,.95,.22,'sawtooth');noise(.8,.12,450)}else if(['freeze','dual'].includes(k)){[880,1320,1760].forEach((n,i)=>tone(n,n*1.25,.55,.08,'triangle',i*.07));noise(.4,.1,3300,'highpass');if(k==='dual'){noise(.65,.18,1500);tone(180,45,.6,.15,'sawtooth')}}else if(['heat','bigbang'].includes(k)){noise(.7,.2,1400);tone(100,340,.65,.14,'sawtooth')}else if(['sprout','fortune'].includes(k)){[330,495,660,990].forEach((n,i)=>tone(n,n,.65,.085,k==='sprout'?'sine':'triangle',i*.09))}else if(k==='colossus'){tone(42,90,.9,.24);noise(.75,.16,400)}else if(k==='repulsion'){[550,820,1100].forEach((n,i)=>tone(n,n*1.3,.2,.08,'triangle',i*.075));noise(.4,.1,2200,'bandpass')}else{tone(80,440,.6,.18,'sawtooth');noise(.3,.14,1200,'bandpass')}}else tone(440,660,.14,.07,'triangle');
+ default:if(type.startsWith('of-')){const k=type.slice(3);tone(60,95,.6,.17);if(k==='randomizer'){[220,880,330,1320,440,1760].forEach((n,i)=>tone(n,n*.8,.13,.08,'square',i*.075));noise(.4,.08,2600,'bandpass')}else if(k==='blackhole'){tone(220,28,.95,.22,'sawtooth');noise(.8,.12,450)}else if(['freeze','dual'].includes(k)){[880,1320,1760].forEach((n,i)=>tone(n,n*1.25,.55,.08,'triangle',i*.07));noise(.4,.1,3300,'highpass');if(k==='dual'){noise(.65,.18,1500);tone(180,45,.6,.15,'sawtooth')}}else if(['heat','bigbang'].includes(k)){noise(.7,.2,1400);tone(100,340,.65,.14,'sawtooth')}else if(['sprout','fortune'].includes(k)){[330,495,660,990].forEach((n,i)=>tone(n,n,.65,.085,k==='sprout'?'sine':'triangle',i*.09))}else if(k==='colossus'){tone(42,90,.9,.24);noise(.75,.16,400)}else if(k==='repulsion'){[550,820,1100].forEach((n,i)=>tone(n,n*1.3,.2,.08,'triangle',i*.075));noise(.4,.1,2200,'bandpass')}else{tone(80,440,.6,.18,'sawtooth');noise(.3,.14,1200,'bandpass')}}else tone(440,660,.14,.07,'triangle');
  }
  return true}
 }
 window.ArenaSoundEngine=ArenaSoundEngine;
 window.ArenaSound=new ArenaSoundEngine();
 })();
+
