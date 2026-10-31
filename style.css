@@ -57,3 +57,47 @@
 .manual-panel{padding:14px;background:linear-gradient(135deg,#24253b,#18232f);border-top:1px solid #735c91}.manual-panel[hidden]{display:none}.manual-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.manual-heading strong{font:10px monospace;letter-spacing:1.5px;color:#d3b4ff}.manual-heading>span{font-size:10px;color:#b1bbcc}.manual-inputs{display:grid;grid-template-columns:106px minmax(0,1fr);gap:32px;align-items:center;touch-action:none}.move-stick{width:106px;height:106px;position:relative;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:50%;background:radial-gradient(circle,#5a507c45,#161b2a 72%);border:1px solid #8672aa;box-shadow:inset 0 0 0 10px #a090cf0b;cursor:grab}.move-stick:active{cursor:grabbing}.stick-cross:before,.stick-cross:after{content:"";position:absolute;background:#a4a5c326;top:50%;left:16%;width:68%;height:1px}.stick-cross:after{transform:rotate(90deg)}#stick-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#c4afea,#6d5c91);border:1px solid #e2cfff;box-shadow:0 3px 12px #0008;pointer-events:none}.move-stick small{position:absolute;bottom:5px;left:0;right:0;text-align:center;font:8px monospace;color:#ad9fc4;pointer-events:none}.manual-skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.manual-skill{min-width:0;min-height:92px;padding:8px 4px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:5px;touch-action:none;user-select:none;-webkit-user-select:none}.manual-skill small{font:9px monospace;letter-spacing:1px;color:#a995c6}.manual-skill span{font-size:10px;line-height:1.5;overflow-wrap:anywhere;text-align:center}.manual-skill b{font:10px monospace;color:#b4a6d1}.manual-skill:disabled{opacity:.5}.manual-skill.ready{border-color:#c3a0f0;background:#5d4279;box-shadow:inset 0 0 16px #bc9aff18}.manual-skill.ready b{color:#f1e2ff}.manual-of.ready{background:#625030;border-color:#e5c47b}.manual-of small{color:#dec17e}.manual-panel p{margin:10px 0 0;color:#9ca6bb;font-size:9px;line-height:1.7}.manual-skill:active:not(:disabled){transform:translateY(1px);filter:brightness(1.2)}
 @media(max-width:480px){.manual-panel{padding:10px}.manual-inputs{grid-template-columns:82px minmax(0,1fr);gap:24px}.move-stick{width:82px;height:82px}#stick-knob{width:34px;height:34px}.manual-skills{gap:4px}.manual-skill{min-height:86px;padding:7px 3px}.manual-skill span{font-size:9px}.manual-heading>span{font-size:9px}.manual-skill b{font-size:9px}}
 
+
+
+/* The opt-in play screen fits the visual viewport without page scrolling. */
+.play-tools{display:none}
+body.manual-screen{overflow:hidden;overscroll-behavior:none}
+.manual-screen main{padding:0}
+.manual-screen header,.manual-screen .match-select,.manual-screen aside,.manual-screen footer{display:none}
+.manual-screen .layout{display:block}
+.manual-screen .arena-wrap{position:fixed;inset:0;z-index:100;width:100%;height:100vh;height:100dvh;display:grid;grid-template-rows:78px 38px minmax(0,1fr) 116px;border:0;border-radius:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#111d28;touch-action:none;user-select:none;-webkit-user-select:none}
+.manual-screen .score{padding:5px 12px;gap:10px;min-height:0;overflow:hidden;align-items:start}
+.manual-screen .score .player{gap:7px;align-items:start;max-width:42%}
+.manual-screen .score .player img{display:none}
+.manual-screen .score .player small,.manual-screen .score .player em{display:none}
+.manual-screen .score .player strong{font-size:13px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manual-screen .score .player .hp{height:4px;margin:3px 0}
+.manual-screen .score .player #num0,.manual-screen .score .player #num1{display:block;font-size:9px;line-height:12px}
+.manual-screen .score .player .poison-status{height:30px;min-height:30px;max-height:30px;font-size:8px;line-height:10px;margin:2px 0 0}
+.manual-screen .vs{padding:4px;font-size:13px;line-height:15px}
+.manual-screen .vs #time{font-size:10px;margin-top:5px}
+.manual-screen .quick-speed{display:none}
+.manual-screen .mode-bar{padding:3px 10px;gap:8px;min-width:0}
+.manual-screen .mode-bar #mode-hint{font-size:9px;margin-right:auto}
+.manual-screen .mode-bar button{font-size:10px;line-height:16px;padding:5px 9px;min-height:30px;white-space:nowrap}
+.manual-screen .play-tools{display:flex;gap:6px}
+.manual-screen .stage{min-height:0;height:100%;min-width:0;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none}
+.manual-screen .stage canvas{width:100%;height:100%;aspect-ratio:auto;object-fit:contain}
+.manual-screen .stage-label{display:none}
+.manual-screen #overlay h2{font-size:24px;margin:10px 0}
+.manual-screen #overlay p{margin-bottom:14px}
+.manual-screen #start{padding:11px 18px;min-width:170px}
+.manual-screen .cutin-dock,.manual-screen .skill-hud,.manual-screen .controls{display:none}
+.manual-screen .manual-panel{display:flex;flex-direction:column;justify-content:center;gap:5px;min-width:0;min-height:0;margin:0;padding:7px 12px;touch-action:none}
+.manual-screen .manual-heading{margin:0}
+.manual-screen .manual-heading strong{font-size:8px}
+.manual-screen .manual-heading>span{font-size:9px}
+.manual-screen .manual-inputs{display:block;min-width:0}
+.manual-screen .manual-skills{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;width:100%;max-width:720px;margin:0 auto}
+.manual-screen .manual-skill{height:66px;min-height:0;gap:2px;padding:5px 4px}
+.manual-screen .manual-skill small{font-size:8px;letter-spacing:0;white-space:nowrap}
+.manual-screen .manual-skill kbd{font:inherit;color:#ddd0f2;margin-left:3px}
+.manual-screen .manual-skill span{font-size:10px;line-height:12px}
+.manual-screen .manual-skill b{font-size:10px;line-height:12px}
+.manual-screen .manual-panel p{margin:0;text-align:center;font-size:8px;line-height:11px}
+@media(max-height:480px){.manual-screen .arena-wrap{grid-template-rows:78px 34px minmax(0,1fr) 87px}.manual-screen .manual-panel{padding:4px 10px;gap:3px}.manual-screen .manual-heading{display:none}.manual-screen .manual-skill{height:61px}.manual-screen .manual-panel p{font-size:7px}}

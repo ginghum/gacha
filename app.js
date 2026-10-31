@@ -38,7 +38,7 @@ const roster=[
 ];
 let selected=[0,1],battleToken=0;
 let manualMode=false;
-const manualInput={x:0,y:0,pointer:null,keys:new Set()};
+const manualInput={x:0,y:0,pointer:null,originX:0,originY:0,keys:new Set()};
 const nameOf=f=>roster[f.char].name;
 const imgs=roster.map(()=>new Image());
 // Render the catalogue portraits as sprites; the source assets remain unchanged.
@@ -483,15 +483,15 @@ setPlaybackSpeed(speed);
 
 // P1 control mode: movement and skills are manual; basic attacks stay automatic.
 function clearManualInput(){
- const stick=$('move-stick'),pointer=manualInput.pointer;
+ const surface=$('play-surface'),pointer=manualInput.pointer;
  manualInput.pointer=null;manualInput.x=manualInput.y=0;manualInput.keys.clear();
- if(pointer!==null&&stick.hasPointerCapture?.(pointer))stick.releasePointerCapture(pointer);
- $('stick-knob').style.transform='translate(-50%,-50%)';
+ if(pointer!==null&&surface.hasPointerCapture?.(pointer))surface.releasePointerCapture(pointer);
 }
 function setManualMode(enabled){
  manualMode=!!enabled;clearManualInput();
+ document.body.classList.toggle('manual-screen',manualMode);
  $('manual-toggle').setAttribute('aria-pressed',String(manualMode));
- $('manual-toggle').textContent='P1操作 '+(manualMode?'ON':'OFF');
+ $('manual-toggle').textContent=manualMode?'操作終了':'P1操作 OFF';
  $('manual-panel').hidden=!manualMode;
  $('mode-hint').textContent=manualMode?'P1 手動 / P2 オート':'P1・P2 オート';
  canvas.setAttribute('aria-label',roster[selected[0]].name+'と'+roster[selected[1]].name+(manualMode?'の対戦フィールド（P1手動）':'の自動対戦フィールド'));
@@ -527,6 +527,7 @@ function useManualSkill(i){
 function updateManualHUD(){
  if(!manualMode||!fighters[0])return;
  const f=fighters[0],r=roster[f.char];
+ $('manual-pause').disabled=!running;$('manual-pause').textContent=paused?'再開':'一時停止';
  for(let i=0;i<4;i++){
   const button=$('manual-skill'+i);button.disabled=!manualSkillReady(f,i);
   button.querySelector('span').textContent=i<3?skills[f.char][i].name:r.overflow?'オーバーフロウ':'OFなし';
@@ -547,29 +548,34 @@ for(let i=0;i<4;i++){
  });
  button.onclick=event=>{if(event.detail===0)useManualSkill(i)};
 }
-const moveStick=$('move-stick');
-function readStick(event){
- const rect=moveStick.getBoundingClientRect(),radius=rect.width*.32;
- const dx=event.clientX-rect.left-rect.width/2,dy=event.clientY-rect.top-rect.height/2;
+const playSurface=$('play-surface');
+function readPlayDrag(event){
+ const radius=42,dx=event.clientX-manualInput.originX,dy=event.clientY-manualInput.originY;
  const distance=Math.hypot(dx,dy),scale=distance>radius?radius/distance:1;
- manualInput.x=distance<radius*.12?0:dx*scale/radius;
- manualInput.y=distance<radius*.12?0:dy*scale/radius;
- $('stick-knob').style.transform='translate(calc(-50% + '+(dx*scale)+'px),calc(-50% + '+(dy*scale)+'px))';
+ manualInput.x=distance<5?0:dx*scale/radius;
+ manualInput.y=distance<5?0:dy*scale/radius;
 }
-moveStick.addEventListener('pointerdown',event=>{
- if(!manualMode||!running||paused||manualInput.pointer!==null||event.button>0)return;
- event.preventDefault();manualInput.pointer=event.pointerId;moveStick.setPointerCapture(event.pointerId);readStick(event);
+playSurface.addEventListener('pointerdown',event=>{
+ if(!manualMode||!running||paused||manualInput.pointer!==null||event.button>0||event.target.closest('button,a,input,select,textarea,label,[contenteditable="true"]'))return;
+ event.preventDefault();manualInput.pointer=event.pointerId;
+ manualInput.originX=event.clientX;manualInput.originY=event.clientY;
+ manualInput.x=manualInput.y=0;playSurface.setPointerCapture(event.pointerId);
 });
-moveStick.addEventListener('pointermove',event=>{if(event.pointerId===manualInput.pointer){event.preventDefault();readStick(event)}});
-for(const type of ['pointerup','pointercancel','lostpointercapture'])moveStick.addEventListener(type,event=>{if(event.pointerId===manualInput.pointer)clearManualInput()});
+playSurface.addEventListener('pointermove',event=>{if(event.pointerId===manualInput.pointer){event.preventDefault();readPlayDrag(event)}});
+for(const type of ['pointerup','pointercancel','lostpointercapture'])playSurface.addEventListener(type,event=>{if(event.pointerId===manualInput.pointer)clearManualInput()});
+$('manual-pause').onclick=()=>$('pause').click();
+$('manual-reset').onclick=reset;
+const manualSkillKeys={'1':0,'2':1,'3':2,'4':3,j:0,k:1,l:2,' ':3};
 const movementKeys=new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d']);
 document.addEventListener('keydown',event=>{
+ if(manualMode&&event.key==='Escape'){event.preventDefault();setManualMode(false);return}
  if(!manualMode||!running||paused||event.altKey||event.ctrlKey||event.metaKey||['INPUT','SELECT','TEXTAREA'].includes(event.target?.tagName)||event.target?.isContentEditable)return;
  const key=event.key.length===1?event.key.toLowerCase():event.key;
  if(movementKeys.has(key)){event.preventDefault();manualInput.keys.add(key)}
- else if(['1','2','3','4'].includes(key)){event.preventDefault();if(!event.repeat)useManualSkill(Number(key)-1)}
+ else if(Object.prototype.hasOwnProperty.call(manualSkillKeys,key)){event.preventDefault();if(!event.repeat)useManualSkill(manualSkillKeys[key])}
 });
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
