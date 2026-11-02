@@ -60,7 +60,7 @@ const roster=[
  ,{key:'hat',name:'ハット',code:'PERCEIVED SPEED',grade:4,ability:'体感速度を操る / 加速・CT操作型',color:'#d9aa76',attack:1.03,defense:1,speed:1.04,overflow:false,passiveLabel:'早回し / OFなし',overflowText:'ハットの編集術',overflowDesc:'オーバーフロウなし。技を出すたび早回しが1段階上昇（最大10）。1段階につき自分の移動速度+6%・CT回復速度+8%・被ダメージ+8%。自己強化と防御低下は戦闘終了まで持続。同時に相手へスロー編集を1重付与（最大10重・6秒持続、再付与で延長）。1重につき相手の移動速度とCT回復速度を3.5%下げる。',descs:['加速しながら踏み込み、近距離で2連打。発動時に自分の早回しと相手のスロー編集を重ねる。','間合いを詰め、短いカットをつなぐように3連撃。発動時に体感速度を変化させる。','高速で踏み込み、重い一撃を叩き込む。発動時に体感速度を変化させる。']}
  ,{key:'balalaika',name:'バラライカ',code:'BODY ARMAMENT',grade:4,ability:'身体を銃器に変える / 高火力・長CT型',color:'#c4cc91',attack:1.55,defense:1,speed:.95,overflow:false,passiveLabel:'銃器化 / OFなし',overflowText:'軍装身体',overflowDesc:'オーバーフロウなし。腕部機関銃・散弾腕砲・胴体重砲の3種を使い分ける。通常攻撃も銃撃。技の再装填は12・16・22秒と長いが、一度に大きな火力を放つ。重砲の爆風は範囲内の本体と召喚体すべてに命中する。',descs:['腕を機関銃に変形し、狙いを追いながら10連射。1発ずつ回避・防御の判定がある。CT12秒。','腕を散弾砲に変形し、7発の高威力散弾を扇状に同時発射。近距離では複数の弾が当たりやすい。CT16秒。','胴体を重砲に変え、0.8秒の構えから高威力の砲弾を発射。着弾時に半径155の爆風を発生させる。CT22秒。']}
  ,{key:'serena',name:'セレナ',code:'WOUND / HEAL',grade:5,ability:'傷を与えると傷が癒える / 高速近接・命中回復型',color:'#c9e7d3',attack:.7,defense:2,speed:1.42,overflow:true,overflowText:'極速縫合・ライフライン',overflowDesc:'HP30%以下で1戦に1回。6秒間、移動速度がさらに1.45倍になり、短い間合いで0.13秒ごとの超高速連撃と毎秒90の高速回復を行う。命中時の回復も強化。無敵・防御強化はなく、拘束や回避で連撃を止められる。',descs:['高速で懐に入り、ナイフを4連続で振るう。射程135。実ダメージの25%＋11を回復（1回最大70）。防御は低く被ダメージ2倍。空振り・回避・無敵・バリアには回復しない。','一瞬で間合いを詰め、交差する3連斬。射程140。命中ごとに回復。','近距離へ踏み込み、6連続の細かな切開で攻め続ける。射程135。命中ごとに回復。'],passiveLabel:'命中回復',passiveDesc:'通常攻撃も射程125のナイフ。与えた実ダメージの25%＋11を回復（1回最大70）。OF中は35%＋16に強化。防御が低く被ダメージ2倍。空振り・回避・無敵・バリアで傷が付かなければ回復しない。'}
- ,{key:'darkness',name:'ダークネス',code:'CHIMERA / LIFE CREATION',grade:5,ability:'あらゆる生物の力を持つ改造人間 / 再生・毒・甲殻・翼刃',color:'#c4b5de',attack:.24,defense:1,speed:1.35,overflow:true,overflowText:'白黒双翼・不死の五秒',overflowDesc:'HP0に達した瞬間、操作モードや技封印・石化にかかわらず1戦に1回自動発動。白黒の翼で5秒間、間合いを残して射程270の超速爪連撃と羽根の射撃を行う。HPは0のまま敗北を保留し、相手を倒せば勝利。回復による延命はできず、5秒終了時に相手が生きていれば敗北する。相手のOF演出中も残り時間は進む。',descs:['毎秒18の自然回復と高速移動。相手から少し距離を保ち、射程260の爪で5連斬。踏み込みも間合いを残して止まり、命中ごとに毒を重ねる。','3.5秒間、甲殻の鎧で被ダメージ45%軽減。半径240へ毒を放ち、近くの本体・召喚体に打撃と毒を与える。','硬化した羽根を7方向へ高速射出。命中すると毒を付与する。']}
+ ,{key:'darkness',name:'ダークネス',code:'CHIMERA / LIFE CREATION',grade:5,ability:'あらゆる生物の力を持つ改造人間 / 再生・毒・甲殻・翼刃',color:'#c4b5de',attack:.24,defense:1,speed:1.35,overflow:true,overflowText:'白黒双翼・不死の五秒',overflowDesc:'HP0に達した瞬間、操作モードや技封印・石化にかかわらず1戦に1回自動発動。白黒の翼で5秒間、間合いを残して射程270の超速爪連撃と羽根の射撃を行う。HPは0のまま敗北を保留し、相手を倒せば勝利。回復による延命はできず、5秒終了時に相手が生きていれば敗北する。相手のOF演出中も残り時間は進む。',descs:['毎秒18の自然回復と高速移動。相手の横をすれ違いながら距離を取り、射程260の爪で5連斬。踏み込みも間合いを残して止まり、命中ごとに毒を重ねる。','3.5秒間、甲殻の鎧で被ダメージ45%軽減。半径240へ毒を放ち、近くの本体・召喚体に打撃と毒を与える。','硬化した羽根を7方向へ高速射出。命中すると毒を付与する。']}
 ];
 let selected=[0,1],battleToken=0,winnerId=-1;
 let manualMode=false;
@@ -256,7 +256,28 @@ function startDarkLastStand(f){
  cutin(f,'白黒双翼・不死の五秒','#e9ddff',true);ring(f.x,f.y-30,'#f3eaff',90,'mirror',.65);playSE('of-shadow',f);log('白黒双翼：HP0・5秒間の最後の猛攻');return true;
 }
 const DARKNESS_SPACING={normal:135,overflow:160,clawStop:115,overflowStop:145};
-function darkSpacingPoint(f,target){const dx=f.x-target.x,dy=f.y-target.y,d=Math.hypot(dx,dy),angle=(d>.01?Math.atan2(dy,dx):f.id?0:Math.PI)+(f.id?-.16:.16),spacing=f.darkStand>0?DARKNESS_SPACING.overflow:DARKNESS_SPACING.normal;return {x:clamp(target.x+Math.cos(angle)*spacing,55,W-55),y:clamp(target.y+Math.sin(angle)*spacing,135,H-65)}}
+function darkSpacingPoint(f,target){
+ const forward=Math.atan2(target.y-f.y,target.x-f.x),side=(f.route+f.id)%2?1:-1,spacing=f.darkStand>0?DARKNESS_SPACING.overflow:DARKNESS_SPACING.normal;
+ const margin={x:105,top:185,bottom:H-110};let best=null,bestScore=-Infinity;
+ // Choose a point beyond the opponent, offset sideways, then keep that point until passing.
+ for(const offset of [side*.58,-side*.58,side*1.05,-side*1.05,Math.PI/2,-Math.PI/2,Math.PI]){
+  const angle=forward+offset,x=target.x+Math.cos(angle)*(spacing+35),y=target.y+Math.sin(angle)*(spacing+35);
+  if(x<margin.x||x>W-margin.x||y<margin.top||y>margin.bottom)continue;
+  const clearance=Math.min(x-55,W-55-x,y-135,H-65-y),progress=Math.cos(offset),preference=Math.sign(offset)===side?12:0;
+  const score=progress*65+Math.min(100,clearance)*.45+preference-Math.hypot(x-f.x,y-f.y)*.035;
+  if(score>bestScore){bestScore=score;best={x,y}}
+ }
+ return best||{x:W/2,y:(135+H-65)/2};
+}
+function darkSafeVelocity(f,vx,vy,speed){
+ const lookX=f.x+(f.mx||0)*.16,lookY=f.y+(f.my||0)*.16;
+ if(lookX<100&&vx<0)vx=Math.max(speed*.4,(100-lookX)*9);
+ if(lookX>W-100&&vx>0)vx=-Math.max(speed*.4,(lookX-W+100)*9);
+ if(lookY<180&&vy<0)vy=Math.max(speed*.4,(180-lookY)*9);
+ if(lookY>H-105&&vy>0)vy=-Math.max(speed*.4,(lookY-H+105)*9);
+ const length=Math.hypot(vx,vy)||1,scale=Math.min(1,speed/length);return {x:vx*scale,y:vy*scale};
+}
+
 function darkClaw(f,target,damage,reach=250){
  if(!running||!battleAlive(f)||!titanRushCanAct(f)||Math.hypot(target.x-f.x,target.y-f.y)>=reach)return;
  const landed=hit(target,damage,f,colors[f.id]);if(landed&&battleAlive(target))applyPoison(target,f);
@@ -412,7 +433,7 @@ function moveFighter(f,e,dt){f.prevX=f.x;f.prevY=f.y;if(f.wordStop>0||f.petrifie
  if(f.iceDash){const a=f.iceDash;a.t+=dt*motorRate(f);const u=Math.min(1,a.t/a.duration);f.x=a.x+(a.tx-a.x)*u;f.y=a.y+(a.ty-a.y)*u;f.mx=(f.x-f.prevX)/dt;f.my=(f.y-f.prevY)/dt;if(u>=1){f.iceDash=null;f.iceGap=.045}}
  else if(f.dash){const a=f.dash;a.t+=dt*motorRate(f);const dx=e.x-a.x,dy=e.y-a.y,len=Math.hypot(dx,dy)||1;const tx=clamp(e.x-dx/len*a.range,55,W-55),ty=clamp(e.y-dy/len*a.range,135,H-65),u=Math.min(1,a.t/a.duration),ease=1-Math.pow(1-u,2);f.x=a.x+(tx-a.x)*ease;f.y=a.y+(ty-a.y)*ease;f.mx=(f.x-f.prevX)/dt;f.my=(f.y-f.prevY)/dt;if(u>=1){f.dash=null;f.turn=0;a.done?.()}}
  else if(manualMode&&f.id===0){moveManual(f,dt)}
- else{f.turn-=dt;f.sprint=Math.max(0,f.sprint-dt);if(f.turn<=0||Math.hypot(f.tx-f.x,f.ty-f.y)<65)chooseRoute(f,e);let tx=f.tx,ty=f.ty;if(f.follow>0){tx=e.x;ty=e.y}if(f.char===37){const point=darkSpacingPoint(f,e);tx=point.x;ty=point.y;f.follow=0}const dx=tx-f.x,dy=ty-f.y,d=Math.hypot(dx,dy)||1;let v=f.follow>0?790:f.sprint>0?850:470;v*=roster[f.char].speed*(f.char===21&&f.fenrir?1.15:1)*motorRate(f);if(f.slow>0)v*=.65;if(f.bind>0)v*=.3;if(f.windup>0)v*=.35;const blend=1-Math.exp(-13*dt);f.mx+=(dx/d*v-f.mx)*blend;f.my+=(dy/d*v-f.my)*blend;f.x+=(f.mx+f.vx)*dt;f.y+=(f.my+f.vy)*dt;}
+ else{f.turn-=dt;f.sprint=Math.max(0,f.sprint-dt);if(f.turn<=0||Math.hypot(f.tx-f.x,f.ty-f.y)<65)chooseRoute(f,e);let tx=f.tx,ty=f.ty;if(f.follow>0){tx=e.x;ty=e.y}const dx=tx-f.x,dy=ty-f.y,d=Math.hypot(dx,dy)||1;let v=f.follow>0?790:f.sprint>0?850:470;v*=roster[f.char].speed*(f.char===21&&f.fenrir?1.15:1)*motorRate(f);if(f.slow>0)v*=.65;if(f.bind>0)v*=.3;if(f.windup>0)v*=.35;let desired={x:dx/d*v,y:dy/d*v};if(f.char===37)desired=darkSafeVelocity(f,desired.x,desired.y,v);const blend=1-Math.exp(-13*dt);f.mx+=(desired.x-f.mx)*blend;f.my+=(desired.y-f.my)*blend;f.x+=(f.mx+f.vx)*dt;f.y+=(f.my+f.vy)*dt;}
  if(f.x<55||f.x>W-55){f.x=clamp(f.x,55,W-55);f.mx*=-.65;f.turn=0;ring(f.x,f.y,colors[f.id],8,'ring',.25)}if(f.y<135||f.y>H-65){f.y=clamp(f.y,135,H-65);f.my*=-.65;f.turn=0;ring(f.x,f.y,colors[f.id],8,'ring',.25)}
  keepGrowingBodyInField(f);if(f.trailClock<=0&&!isConcealed(f)){const moving=Math.hypot(f.mx,f.my)>280;if(moving){if(!reduced)trails.push({x:f.prevX,y:f.prevY,id:f.id,life:.26});fx.push({x:f.prevX,y:f.prevY-28,tx:f.x,ty:f.y-28,c:colors[f.id],kind:'beam',r:f.dash?7:3,life:.22,max:.22})}f.trailClock=reduced?.1:.045}f.vx*=Math.exp(-5*dt);f.vy*=Math.exp(-5*dt)
 }
@@ -926,6 +947,7 @@ document.addEventListener('keydown',event=>{
 document.addEventListener('keyup',event=>manualInput.keys.delete(event.key.length===1?event.key.toLowerCase():event.key));
 window.addEventListener('blur',clearManualInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearManualInput()});
+
 
 
 
