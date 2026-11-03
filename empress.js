@@ -179,6 +179,8 @@ function drawEmpVisual(q,p){
 let empressPreviousOpponent=1;
 function syncEmpressChallengeUI(){const active=selected[1]===EMPRESS_ID,button=$('empress-challenge');button.textContent=active?'通常対戦に戻す':'特別対戦：エンプレス SS';button.setAttribute('aria-pressed',String(active))}
 function toggleEmpressChallenge(){
+ if(teamMode){toggleRelayEmpress();return}
+
  if(selected[1]===EMPRESS_ID)selected[1]=roster[empressPreviousOpponent]&&!roster[empressPreviousOpponent].special?empressPreviousOpponent:1;
  else{empressPreviousOpponent=selected[1];selected[1]=EMPRESS_ID}
  reset();

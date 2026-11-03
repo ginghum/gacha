@@ -126,3 +126,25 @@ body.manual-screen{overflow:hidden;overscroll-behavior:none}
 .selection-actions{flex-wrap:wrap;justify-content:flex-end;gap:6px}.selection-actions #random-both{border-color:#b6e5ef;color:#d9f6ff}.selection-actions #random-p1,.selection-actions #random-p2{font-size:11px}@media(max-width:600px){.select-heading{align-items:flex-start;gap:8px}.selection-actions>span{width:100%;text-align:right}.selection-actions button{min-height:32px;padding:6px 9px}}
 
 #empress-challenge{border:1px solid #c3a26a;color:#f4d39b;background:#33283b}#empress-challenge[aria-pressed=true]{background:#654334;color:#fff0cf}.selection-actions{flex-wrap:wrap}.selection-actions #empress-challenge{white-space:normal}
+
+/* Relay teams use the same one-on-one field, with up to three entrants. */
+[hidden]{display:none!important}
+.relay-heading{display:flex;align-items:center;gap:14px;margin:12px 0;color:#a9b3c4;font-size:12px;flex-wrap:wrap}
+#relay-toggle{border:1px solid #a18b58;color:#ead5a2;background:#242324;padding:10px 16px;border-radius:6px;font-weight:700;cursor:pointer}
+#relay-toggle[aria-pressed=true]{background:#544428;color:#fff1c9}
+.relay-editor{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.relay-team-editor{background:#151c27;border:1px solid #344153;border-radius:8px;padding:14px;min-width:0}
+.relay-team-editor>strong{font-size:13px;color:#e8d9ae;display:block;margin-bottom:10px}
+.relay-team-editor label{display:flex;gap:12px;align-items:center;margin-top:8px;color:#b9c3d2;font-size:12px}
+.relay-team-editor select{min-width:0;width:100%;background:#101720;color:#e3e8f1;border:1px solid #394659;border-radius:5px;padding:9px 6px;font:inherit}
+.relay-team-editor label>span{flex-shrink:0}
+.relay-editor>p{grid-column:1/-1;color:#9daabd;font-size:12px;margin:0 0 6px}
+.relay-score{display:grid;gap:6px;padding:10px 12px;background:#111824;border-bottom:1px solid #303c4d}
+.relay-line{display:flex;align-items:stretch;gap:6px;min-width:0}
+.relay-line>strong{font-size:12px;align-self:center;flex:0 0 33px;color:#e7d6a9}
+.relay-line>strong small{display:block;font-size:10px;color:#8b9aad}
+.relay-member{display:flex;align-items:center;gap:7px;flex:1;min-width:0;padding:6px;border:1px solid #324155;border-radius:5px;background:#1b2533}
+.relay-member img{width:28px;height:34px;object-fit:cover;object-position:top;border-radius:3px}
+.relay-member div{min-width:0}.relay-member small{display:block;font-size:9px;color:#9dadbf;white-space:nowrap}.relay-member span{display:block;font-size:11px;color:#d8e2ed;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.relay-member.active{border-color:#bc9e5c;background:#302c24}.relay-member.active small{color:#e7ce91}.relay-member.defeated{opacity:.35}.relay-member.defeated span{text-decoration:line-through}.relay-member.empty{flex-direction:column;align-items:flex-start;justify-content:center;opacity:.45}
+@media(max-width:600px){.relay-editor{grid-template-columns:1fr;gap:10px}.relay-score{padding:8px 6px}.relay-member{gap:4px;padding:4px}.relay-member img{width:22px;height:30px}.relay-member span{font-size:10px}.relay-line{gap:4px}.relay-heading>span{font-size:11px}}
