@@ -80,6 +80,57 @@ const roster=[
 ];
 roster.push({key:'senichi',name:'センイチ',code:'MONEY EATER',grade:4,ability:'お金ゲージ / 食べて永続強化',color:'#f0cc68',attack:1,defense:1,speed:1,overflow:false,passiveLabel:'お金を食べて強化 / OFなし',overflowText:'商売繁盛',overflowDesc:'オーバーフロウなし。お金は0から開始し最大100。技1で25、技2で35貯まり、技3で全額食べる。累計消費100ごとに攻撃力+40%・防御力+15%・移動速度+10%（移動は最大+35%）。強化はバトル中永続、次の対戦ではリセット。',descs:['商品を投げて攻撃し、お金を25貯める。命中しなくても収入を得る。','接近して2連打し、お金を35貯める。命中しなくても収入を得る。','貯めたお金を全て食べ、攻撃・防御・移動速度を永続強化。お金が0の時は使用できない。']});
 roster.push({key:'itoguchi',name:'イトグチ',maxHp:2000,code:'CONCEPT ERASURE',grade:5,ability:'概念と物体を消滅させる / HP優勢時は能力封印',color:'#b6e5ef',attack:.9,defense:.85,speed:1,overflow:true,overflowRatio:.1,overflowText:'アルティメットフロウ',overflowDesc:'自身のHP10%以下（200以下）、かつ自身の現在HPが相手以下なら自動発動するUF。1戦1回、対戦終了まで移動速度が3.5倍、技3のCTが0.1秒になる。発動時に技3の残りCTも0.1秒へ変更。相手の現在HPが自分より少ない時は、技1〜3・UFを使用できない。同HPなら使用可能。通常の体術は制限されない。',descs:['周囲の飛び道具を消滅させ、相手の周囲へ消滅衝撃を放つ。CT24秒。','相手と周囲の兵士・分身を消滅領域で攻撃。CT32秒。','狙った相手へ消滅の一撃を放つ。CT40秒。UF発動後は一撃の威力を抑えたCT0.1秒の連射に変わるが、HP優勢時の能力制限は続く。']});
+// Fixed character tuning from the full-roster balance pass; independent of opponent, HP and random rolls.
+const CHARACTER_BALANCE=Object.freeze({
+ plus:Object.freeze({attack:1.001,taken:0.999}),
+ x:Object.freeze({attack:0.978,taken:1.022}),
+ lance:Object.freeze({attack:1.028,taken:0.973}),
+ hikaru:Object.freeze({attack:1.012,taken:0.988}),
+ kobal:Object.freeze({attack:1.009,taken:0.991}),
+ konke:Object.freeze({attack:1.025,taken:0.976}),
+ milk:Object.freeze({attack:1.05,taken:0.953}),
+ leorka:Object.freeze({attack:1.039,taken:0.962}),
+ torie:Object.freeze({attack:0.995,taken:1.005}),
+ beret:Object.freeze({attack:1.007,taken:0.993}),
+ yuji:Object.freeze({attack:1.1,taken:0.909}),
+ yaoi:Object.freeze({attack:1.011,taken:0.989}),
+ ojo:Object.freeze({attack:1.011,taken:0.989}),
+ gumon:Object.freeze({attack:0.914,taken:1.094}),
+ kagachi:Object.freeze({attack:0.989,taken:1.011}),
+ masa:Object.freeze({attack:1.006,taken:0.994}),
+ zenomura:Object.freeze({attack:1.037,taken:0.964}),
+ devil:Object.freeze({attack:1.009,taken:0.991}),
+ deji:Object.freeze({attack:1.034,taken:0.967}),
+ ashara:Object.freeze({attack:1.006,taken:0.994}),
+ minus:Object.freeze({attack:0.934,taken:1.07}),
+ paster:Object.freeze({attack:0.99,taken:1.01}),
+ dancho:Object.freeze({attack:0.991,taken:1.009}),
+ mu:Object.freeze({attack:1.002,taken:0.998}),
+ clarine:Object.freeze({attack:0.997,taken:1.003}),
+ mikael:Object.freeze({attack:1.022,taken:0.978}),
+ hattan:Object.freeze({attack:1.003,taken:0.997}),
+ grav:Object.freeze({attack:1.067,taken:0.937}),
+ tsukichiyo:Object.freeze({attack:0.991,taken:1.009}),
+ titan:Object.freeze({attack:0.987,taken:1.013}),
+ tanaka:Object.freeze({attack:0.991,taken:1.009}),
+ van:Object.freeze({attack:1.016,taken:0.985}),
+ judge:Object.freeze({attack:0.973,taken:1.028}),
+ an:Object.freeze({attack:1.026,taken:0.975}),
+ hat:Object.freeze({attack:1.024,taken:0.977}),
+ balalaika:Object.freeze({attack:1.006,taken:0.994}),
+ serena:Object.freeze({attack:0.964,taken:1.037}),
+ darkness:Object.freeze({attack:0.887,taken:1.127}),
+ dream:Object.freeze({attack:1.01,taken:0.99}),
+ matsumaro:Object.freeze({attack:0.967,taken:1.034}),
+ ganashu:Object.freeze({attack:0.997,taken:1.003}),
+ nine:Object.freeze({attack:0.953,taken:1.05}),
+ ripia:Object.freeze({attack:0.985,taken:1.016}),
+ menou:Object.freeze({attack:1.0,taken:1.0}),
+ sickness:Object.freeze({attack:1.016,taken:0.985}),
+ jekyll:Object.freeze({attack:0.969,taken:1.032}),
+ senichi:Object.freeze({attack:1.044,taken:0.958}),
+ itoguchi:Object.freeze({attack:0.87,taken:1.149}),
+});
 let selected=[0,1],battleToken=0,winnerId=-1;
 let manualMode=false;
 const manualInput={target:null,keys:new Set()};
@@ -247,7 +298,7 @@ function plantAnnPool(f,x,y,r,life,damage){const own=pools.filter(p=>p.kind==='a
 function tickAnnPool(pool,dt){pool.life=Math.max(0,pool.life-dt);pool.tick-=dt;while(pool.life>0&&pool.tick<=0&&running){pool.tick+=.7;const source=fighters[pool.owner];for(const target of crowdOverflowTargets(pool.owner)){if(!running)break;if(Math.hypot(target.x-pool.x,target.y-pool.y)<pool.r+hurtRadius(target)&&hit(target,pool.damage,source,colors[pool.owner],0,true,'annPoison'))applyPoison(target,source)}}}
 function drawAnnPool(pool){ctx.save();ctx.strokeStyle=colors[pool.owner];ctx.fillStyle='#9951ba';ctx.globalAlpha=Math.min(1,pool.life)*.16;ctx.beginPath();ctx.ellipse(pool.x,pool.y-10,pool.r,pool.r*.62,0,0,7);ctx.fill();ctx.globalAlpha=Math.min(1,pool.life)*.6;ctx.lineWidth=2;ctx.setLineDash([7,9]);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#dba7e8';for(let n=0;n<8;n++){const a=n*2.4,x=pool.x+Math.cos(a)*pool.r*.7,y=pool.y+Math.sin(a)*pool.r*.4-((elapsed*24+n*17)%65);ctx.globalAlpha=.25;ctx.beginPath();ctx.arc(x,y,4+n%3,0,7);ctx.fill()}ctx.restore()}
 
-function attackScale(f){return roster[f.char].attack*(f.char===46?1+f.moneyEaten*.004:1)*jekyllAttackFactor(f)*(f.bloodRush>0?3:1)*(f.char===37&&f.darkStand>0?1.3:1)*(f.falseVerdict>0?.8:1)*(f.chaos?.weak>0?.45:f.disorder?.weak>0?.7:1)*(f.powerBuff>0?2:1)*(f.char===11&&f.sprouted?2:1)*(f.char===21&&f.fenrir?1.25:1)*(f.char===14?1+f.growth*.08:f.char===15?1+f.strength*.1:1)}
+function attackScale(f){return (CHARACTER_BALANCE[roster[f.char].key]?.attack??1)*roster[f.char].attack*(f.char===46?1+f.moneyEaten*.004:1)*jekyllAttackFactor(f)*(f.bloodRush>0?3:1)*(f.char===37&&f.darkStand>0?1.3:1)*(f.falseVerdict>0?.8:1)*(f.chaos?.weak>0?.45:f.disorder?.weak>0?.7:1)*(f.powerBuff>0?2:1)*(f.char===11&&f.sprouted?2:1)*(f.char===21&&f.fenrir?1.25:1)*(f.char===14?1+f.growth*.08:f.char===15?1+f.strength*.1:1)}
 function bodyScale(f){return f.char===29?1.25:f.char===14?1+f.growth*.05:f.char===21&&f.fenrir?1.15:1}
 function hurtRadius(f){return 32*bodyScale(f)}
 function keepGrowingBodyInField(f){if(f.char!==14)return;const s=bodyScale(f),x=f.x,y=f.y,margin=Math.max(55,46*s+8);f.x=clamp(f.x,margin,W-margin);f.y=clamp(f.y,Math.max(135,109*s+10),Math.min(H-65,H-32*s-15));if(f.x!==x||f.y!==y)f.turn=0}
@@ -799,7 +850,7 @@ function drawDiamondGem(x,y,size,rotation=0){ctx.save();ctx.translate(x,y);ctx.r
 function drawDiamondMeteor(o){for(const m of o.meteors){if(m.done){const life=o.t-m.at;if(life<.6){ctx.save();ctx.globalAlpha=(1-life/.6)*.7;ctx.strokeStyle='#dbeeff';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(m.x,m.y-20,m.r*(.3+life),m.r*(.2+life*.4),0,0,7);ctx.stroke();ctx.restore()}continue}ctx.save();ctx.strokeStyle='#d6eaff';ctx.fillStyle='#d1cdff';ctx.globalAlpha=.12;ctx.beginPath();ctx.ellipse(m.x,m.y-20,m.r,m.r*.6,0,0,7);ctx.fill();ctx.globalAlpha=.65;ctx.lineWidth=2;ctx.setLineDash([9,7]);ctx.stroke();ctx.setLineDash([]);const u=clamp((o.t-(m.at-.65))/.65,0,1);if(u>0){ctx.globalAlpha=.95;const y=m.y-20-(1-u)*530,x=m.x+(1-u)*110;ctx.strokeStyle='#e2efff88';ctx.lineWidth=m.r*.3;ctx.beginPath();ctx.moveTo(x+30,y-140);ctx.lineTo(x,y);ctx.stroke();drawDiamondGem(x,y,m.r*.4,-.2)}ctx.restore()}}
 
 
-function stoneDefense(f){return f.defense/(f.char===46?1+f.moneyEaten*.0015:1)*(f.menouFragile>0?1.2:1)*(f.bloodRush>0?.35:1)*(f.char===37&&f.darkArmor>0?.55:1)*(f.char===34?1+f.hatTempo*.08:1)*(f.falseVerdict>0?1.2:1)/(f.petrified>0?1.5:1)}
+function stoneDefense(f){return (CHARACTER_BALANCE[roster[f.char].key]?.taken??1)*f.defense/(f.char===46?1+f.moneyEaten*.0015:1)*(f.menouFragile>0?1.2:1)*(f.bloodRush>0?.35:1)*(f.char===37&&f.darkArmor>0?.55:1)*(f.char===34?1+f.hatTempo*.08:1)*(f.falseVerdict>0?1.2:1)/(f.petrified>0?1.5:1)}
 function applyPetrify(target,source,duration){if(untouchable(target))return false;if(!running||target.phantom||!battleAlive(target)||target.invincible>0||target.overflowQueued||target.riftMirror>0)return false;target.petrified=Math.max(target.petrified||0,duration);target.dash=null;target.iceDash=null;target.follow=0;target.mx=target.my=target.vx=target.vy=0;releaseGrip(target);ring(target.x,target.y-25,'#c6c7ac',50,'cage',.5);return true}
 function tickStoneAndRift(f,dt){const was=f.petrified>0;f.petrified=Math.max(0,(f.petrified||0)-dt);f.riftEvade=Math.max(0,(f.riftEvade||0)-dt);f.riftMirror=Math.max(0,(f.riftMirror||0)-dt);if(was&&!f.petrified&&!f.summon){f.turn=0;queueOverflow(f)}}
 function startStoneField(f){stoneField={owner:f.id,left:5};for(const target of crowdOverflowTargets(f.id)){if(!running)break;const landed=hit(target,240,f,'#d1d1af',0,false,'stone');if(landed)applyPetrify(target,f,5)}if(!running)stoneField=null;else log('フェルマータ：全域石化5秒・CT停止・石化中の防御1.5倍')}
