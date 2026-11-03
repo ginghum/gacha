@@ -2,7 +2,7 @@
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
 const MAX_HP=1500,OVERFLOW_RATIO=.3;
 const ITOGUCHI_UNLOCK_TIME=8;
-const ITOGUCHI_CONTROL={centerX:320,centerY:400,returnSpeed:180,palmRange:240,sweepRange:500,fieldRange:430,rayRange:680};
+const ITOGUCHI_CONTROL={centerX:320,centerY:400,returnSpeed:95,walkRadius:80,palmRange:240,sweepRange:500,fieldRange:430,rayRange:680};
 const ULTIMATE_FOCUS={duration:1.35,enter:.18,leave:.42,zoom:2.15,slow:.18};
 let ultimateFocus=null;
 const HATTAN_CLONE_BALANCE={hp:50,speed:260,rushSpeed:360,detectRange:280};
@@ -83,7 +83,7 @@ const roster=[
  ,{key:'jekyll',name:'ジキル',code:'DISTANCE / TWIN SCISSORS',grade:4,ability:'ジキル⇄ハイド / 8秒交代・CTとOF共用',color:'#a9cc8e',attack:0.72,defense:1,speed:1.05,overflow:true,overflowRatio:.4,overflowText:'ここには届かない',overflowDesc:'8秒の戦闘時間ごとに人格が交代。HP・技1〜3の残りCT・1戦1回のOF使用権は共用。HP40%以下で生存していれば、ハイドからも即座にジキルへ交代し、自動OFで4秒間、相手の攻撃・OF・反射・継続ダメージ・状態異常が届かなくなる。ハイド自身はOFを使わない。使用後も8秒交代は続く。',descs:['ジキル「こっちに来ないで」：弱いハサミを2連投し、距離を取る。ハイド「逃げんなよ」：相手を間合いへ引き寄せ、ハサミで3連撃。共通CT6秒。','ジキル「離れてください！」：近くの相手を押し離して退避。ハイド「ぶった切る！」：一気に接近し、重いハサミの2連撃。共通CT8秒。','ジキル「切っちゃいますよ……」：3方向へハサミを投げて逃げ道を作る。ハイド「祭りは終わらねぇ」：相手を追いながら6連続で切り刻む。共通CT11秒。']}
 ];
 roster.push({key:'senichi',name:'センイチ',code:'MONEY EATER',grade:4,ability:'お金ゲージ / 食べて永続強化',color:'#f0cc68',attack:1,defense:1,speed:1,overflow:false,passiveLabel:'お金を食べて強化 / OFなし',overflowText:'商売繁盛',overflowDesc:'オーバーフロウなし。お金は0から開始し最大100。技1で25、技2で35貯まり、技3で全額食べる。累計消費100ごとに攻撃力+40%・防御力+15%・移動速度+10%（移動は最大+35%）。強化はバトル中永続、次の対戦ではリセット。',descs:['商品を投げて攻撃し、お金を25貯める。命中しなくても収入を得る。','接近して2連打し、お金を35貯める。命中しなくても収入を得る。','貯めたお金を全て食べ、攻撃・防御・移動速度を永続強化。お金が0の時は使用できない。']});
-roster.push({key:'itoguchi',name:'イトグチ',maxHp:2000,code:'CONCEPT ERASURE',grade:5,ability:'中央で迎撃 / 概念と物体を消滅させる',color:'#b6e5ef',attack:.9,defense:.85,speed:1,overflow:true,overflowRatio:.1,overflowText:'アルティメットフロウ',overflowDesc:'対戦開始8秒経過後、自身のHP10%以下（200以下）で自動発動するUF。1戦1回、対戦終了まで移動速度が3.5倍、技3のCTが0.1秒になる。発動時に技3の残りCTも0.1秒へ変更。開始8秒までは技1〜3・UFを使用できない。解禁後は相手とのHP差による制限はない。回避率の上昇はない。通常の体術は制限されない。UF前のオート行動は中央を拠点に迎撃し、UF後は超高速で追撃する。',descs:['迫る飛び道具や突進へ反応し、半径500の広域消滅波で飛び道具を消す。射程内の相手へ衝撃を返す。初回は開始8秒で解禁、以後CT24秒。','相手の接近や包囲へ反応し、自分を中心とした半径430の消滅領域で相手・兵士・分身を迎撃。初回は開始8秒で解禁、以後CT32秒。','相手の技発動や離脱へ合わせ、射程680の消滅線を放つ。初回は開始8秒で解禁、以後CT40秒。UF発動後は一撃の威力を抑えたCT0.1秒の連射に変わるが、開始8秒での解禁条件は共通。']});
+roster.push({key:'itoguchi',name:'イトグチ',maxHp:2000,code:'CONCEPT ERASURE',grade:5,ability:'中央で迎撃 / 概念と物体を消滅させる',color:'#b6e5ef',attack:.9,defense:.85,speed:1,overflow:true,overflowRatio:.1,overflowText:'アルティメットフロウ',overflowDesc:'対戦開始8秒経過後、自身のHP10%以下（200以下）で自動発動するUF。1戦1回、対戦終了まで移動速度が3.5倍、技3のCTが0.1秒になる。発動時に技3の残りCTも0.1秒へ変更。開始8秒までは技1〜3・UFを使用できない。解禁後は相手とのHP差による制限はない。回避率の上昇はない。通常の体術は制限されない。UF前のオート行動は中央付近を歩いて位置取りしながら迎撃し、UF後は超高速で追撃する。',descs:['迫る飛び道具や突進へ反応し、半径500の広域消滅波で飛び道具を消す。射程内の相手へ衝撃を返す。初回は開始8秒で解禁、以後CT24秒。','相手の接近や包囲へ反応し、自分を中心とした半径430の消滅領域で相手・兵士・分身を迎撃。初回は開始8秒で解禁、以後CT32秒。','相手の技発動や離脱へ合わせ、射程680の消滅線を放つ。初回は開始8秒で解禁、以後CT40秒。UF発動後は一撃の威力を抑えたCT0.1秒の連射に変わるが、開始8秒での解禁条件は共通。']});
 // Fixed character tuning from the full-roster balance pass; independent of opponent, HP and random rolls.
 const CHARACTER_BALANCE=Object.freeze({
  plus:Object.freeze({attack:1.001,taken:0.999}),
@@ -382,10 +382,13 @@ function drawSenichiGauge(f){ctx.save();ctx.fillStyle='#302a22';ctx.fillRect(-38
 
 function itoguchiLocked(f){return f?.char===47&&elapsed<ITOGUCHI_UNLOCK_TIME}
 function itoguchiUnlockLabel(){return '解禁まで '+Math.max(0,ITOGUCHI_UNLOCK_TIME-elapsed).toFixed(1)+'s'}
-function moveItoguchiCenter(f,dt){
+function moveItoguchiCenter(f,e,dt){
  const anchorX=ITOGUCHI_CONTROL.centerX+(selected[0]===47&&selected[1]===47?(f.id?22:-22):0),anchorY=ITOGUCHI_CONTROL.centerY;
- const dx=anchorX+Math.sin(elapsed*.8+f.id)*6-f.x,dy=anchorY+Math.cos(elapsed*.65+f.id)*4-f.y,d=Math.hypot(dx,dy)||1;
- const rate=(f.slow>0?.65:1)*(f.bind>0?.3:1)*motorRate(f),v=Math.min(ITOGUCHI_CONTROL.returnSpeed,d*6)*rate;
+ const angle=Math.atan2(e.y-anchorY,e.x-anchorX),distance=Math.hypot(e.x-anchorX,e.y-anchorY);
+ const radius=ITOGUCHI_CONTROL.walkRadius,radial=clamp((distance-265)*.24,-radius*.35,radius*.35),side=Math.sin(elapsed*.55+f.id*Math.PI)*radius*.9;
+ const targetX=anchorX+Math.cos(angle)*radial-Math.sin(angle)*side,targetY=anchorY+Math.sin(angle)*radial+Math.cos(angle)*side;
+ const dx=targetX-f.x,dy=targetY-f.y,d=Math.hypot(dx,dy)||1;
+ const rate=(f.slow>0?.65:1)*(f.bind>0?.3:1)*motorRate(f),v=Math.min(ITOGUCHI_CONTROL.returnSpeed,d*2.4)*rate;
  f.follow=0;f.mx=dx/d*v;f.my=dy/d*v;f.x+=(f.mx+f.vx)*dt;f.y+=(f.my+f.vy)*dt;
 }
 function itoguchiIncoming(f){
@@ -689,7 +692,7 @@ function moveFighter(f,e,dt){f.prevX=f.x;f.prevY=f.y;if(f.shadowPin>0||f.wordSto
  else if(f.dash){const a=f.dash;if(selfSkillActive(a.selfSkillOwner))e=f;a.t+=dt*motorRate(f);const dx=e.x-a.x,dy=e.y-a.y,len=Math.hypot(dx,dy)||1;const tx=clamp(e.x-dx/len*a.range,55,W-55),ty=clamp(e.y-dy/len*a.range,135,H-65),u=Math.min(1,a.t/a.duration),ease=1-Math.pow(1-u,2);f.x=a.x+(tx-a.x)*ease;f.y=a.y+(ty-a.y)*ease;f.mx=(f.x-f.prevX)/dt;f.my=(f.y-f.prevY)/dt;if(a.serenaCut&&Math.hypot(e.x-f.x,e.y-f.y)<135)a.serenaCut();if(u>=1){f.dash=null;f.turn=0;a.done?.()}}
  else if(f.drunkStumble>0){moveDrunk(f,dt)}
  else if(manualMode&&f.id===0){moveManual(f,dt)}
- else if(f.char===47&&!f.ultimateFlow){moveItoguchiCenter(f,dt)}
+ else if(f.char===47&&!f.ultimateFlow){moveItoguchiCenter(f,e,dt)}
  else{f.turn-=dt;f.sprint=Math.max(0,f.sprint-dt);if(f.turn<=0||Math.hypot(f.tx-f.x,f.ty-f.y)<65)chooseRoute(f,e);let tx=f.tx,ty=f.ty;if(f.follow>0){tx=e.x;ty=e.y}const dx=tx-f.x,dy=ty-f.y,d=Math.hypot(dx,dy)||1;let v=f.follow>0?790:f.sprint>0?850:470;v*=roster[f.char].speed*(f.char===21&&f.fenrir?1.15:1)*motorRate(f);if(f.slow>0)v*=.65;if(f.bind>0)v*=.3;if(f.windup>0)v*=.35;let desired={x:dx/d*v,y:dy/d*v};if([1,23,33,35,36,37,38,39,42,44,45].includes(f.char))desired=darkSafeVelocity(f,desired.x,desired.y,v);const blend=1-Math.exp(-13*dt);f.mx+=(desired.x-f.mx)*blend;f.my+=(desired.y-f.my)*blend;f.x+=(f.mx+f.vx)*dt;f.y+=(f.my+f.vy)*dt;}
  if(f.x<55||f.x>W-55){f.x=clamp(f.x,55,W-55);f.mx*=-.65;f.turn=0;ring(f.x,f.y,colors[f.id],8,'ring',.25)}if(f.y<135||f.y>H-65){f.y=clamp(f.y,135,H-65);f.my*=-.65;f.turn=0;ring(f.x,f.y,colors[f.id],8,'ring',.25)}
  keepGrowingBodyInField(f);if(f.trailClock<=0&&!isConcealed(f)){const moving=Math.hypot(f.mx,f.my)>280;if(moving){if(!reduced)trails.push({x:f.prevX,y:f.prevY,id:f.id,life:.26});fx.push({x:f.prevX,y:f.prevY-28,tx:f.x,ty:f.y-28,c:colors[f.id],kind:'beam',r:f.dash?7:3,life:.22,max:.22})}f.trailClock=reduced?.1:.045}f.vx*=Math.exp(-5*dt);f.vy*=Math.exp(-5*dt)
