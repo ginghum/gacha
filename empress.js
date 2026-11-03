@@ -16,7 +16,7 @@ function empClearSlot(f,index){
  shots=shots.filter(s=>!(s.owner===f.id&&s.empSlot===index));
  diamondSoldiers=diamondSoldiers.filter(v=>!(v.owner===f.id&&v.empSlot===index));
  fx=fx.filter(v=>!(v.empOwner===f.id&&v.empSlot===index));
- for(const e of fighters)for(const field of ['empStop','empBlind'])if(e[field]?.owner===f.id&&e[field].slot===index)e[field]=null;
+ for(const e of [...fighters,...diamondSoldiers])for(const field of ['empStop','empBlind'])if(e[field]?.owner===f.id&&e[field].slot===index)e[field]=null;
  f.emp.slots[index]=null;
 }
 function empEquip(f,index,key,duration,force=false){
@@ -113,7 +113,7 @@ function empApplyStatus(f,kind,duration){
  if(kind==='disease'){if(empHas(f,'disease'))return false;f.diseaseTime=Math.max(f.diseaseTime||0,duration);return true}return false;
 }
 function tickEmpressWorld(dt){
- for(const f of fighters){
+ for(const f of [...fighters,...diamondSoldiers]){
   f.sleepTime=Math.max(0,(f.sleepTime||0)-dt);f.diseaseTime=Math.max(0,(f.diseaseTime||0)-dt);
   for(const k of ['empStop','empBlind'])if(f[k]){f[k].left-=dt;const source=fighters[f[k].owner],slot=source?.emp?.slots[f[k].slot];if(f[k].left<=0||!slot||slot.token!==f[k].token)f[k]=null}
   if(f.char!==EMPRESS_ID||f.summon||!battleAlive(f))continue;
