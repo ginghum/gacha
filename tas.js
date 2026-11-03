@@ -22,10 +22,6 @@ function drawTasMouth(x,y,angle,scale=1){
  ctx.fillStyle='#562d3c';ctx.strokeStyle='#efb9b0';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,0,13,9,0,0,7);ctx.fill();ctx.stroke();
  ctx.fillStyle='#fff0db';for(let n=-1;n<=1;n++)for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(n*7-3,side*6);ctx.lineTo(n*7+3,side*6);ctx.lineTo(n*7,side*1);ctx.closePath();ctx.fill()}ctx.restore();
 }
-function drawTasAura(f){
- if(!battleAlive(f))return;ctx.save();ctx.globalAlpha*=.8;ctx.strokeStyle='#b87c88';ctx.lineWidth=5;ctx.lineCap='round';
- for(const side of [-1,1]){const wave=Math.sin(elapsed*2.2+side)*10,x=side*(63+wave*.3),y=-75+wave;ctx.beginPath();ctx.moveTo(side*18,-30);ctx.bezierCurveTo(side*88,-5,side*95,-100,x,y);ctx.stroke();drawTasMouth(x,y,side*.3,.55)}ctx.restore();
-}
 function drawTasTentacle(q){
  const side=q.side||1;ctx.lineWidth=q.r;ctx.lineCap='round';ctx.strokeStyle='#995e70';ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.bezierCurveTo(q.x+(q.tx-q.x)*.3+side*65,q.y-100,q.x+(q.tx-q.x)*.7-side*45,q.ty+65,q.tx,q.ty);ctx.stroke();
  ctx.lineWidth=3;ctx.strokeStyle='#e3a6b0';ctx.stroke();drawTasMouth(q.tx,q.ty,Math.atan2(q.ty-q.y,q.tx-q.x),1);
