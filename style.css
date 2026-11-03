@@ -124,3 +124,5 @@ body.manual-screen{overflow:hidden;overscroll-behavior:none}
 @media(max-width:480px){.selection-actions>span{display:none}.selection-actions{gap:0}}
 
 .selection-actions{flex-wrap:wrap;justify-content:flex-end;gap:6px}.selection-actions #random-both{border-color:#b6e5ef;color:#d9f6ff}.selection-actions #random-p1,.selection-actions #random-p2{font-size:11px}@media(max-width:600px){.select-heading{align-items:flex-start;gap:8px}.selection-actions>span{width:100%;text-align:right}.selection-actions button{min-height:32px;padding:6px 9px}}
+
+#empress-challenge{border:1px solid #c3a26a;color:#f4d39b;background:#33283b}#empress-challenge[aria-pressed=true]{background:#654334;color:#fff0cf}.selection-actions{flex-wrap:wrap}.selection-actions #empress-challenge{white-space:normal}
