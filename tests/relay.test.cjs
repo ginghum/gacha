@@ -23,6 +23,19 @@ for(const teams of ['[[0,2,null],[1,3,null]]','[[0,null,null],[1,3,null]]','[[0,
 run('teamDraft=[[0,null,2],[1,3,null]];start();fighters[0].hp=0;finish();reset();tickRelayTransition(2)');assert(run('!running&&!relayPending&&fighters[0].char===0'));
 run('randomizeFighters(0)');assert(run('teamDraft[0][1]===null&&teamDraft[0].filter(v=>v!==null).length===2'));
 run('toggleEmpressChallenge()');assert(run('teamDraft[1][0]===48&&teamDraft[1][1]===null'));run('toggleEmpressChallenge()');assert(run('teamDraft[1][1]===3'));
+// Random teams draw without replacement across both sides and skip Empress.
+for(let trial=0;trial<300;trial++){
+ run('teamDraft=[[0,0,48],[48,1,1]];randomizeFighters()');
+ assert(run('new Set(teamDraft.flat()).size===6&&teamDraft.flat().every(char=>char!==EMPRESS_ID)'));
+}
+for(const side of [0,1])for(let trial=0;trial<100;trial++){
+ run('teamDraft=[[0,null,2],[3,4,null]]');
+ const other=run('JSON.stringify(teamDraft['+(1-side)+'])');
+ run('randomizeFighters('+side+')');
+ assert.equal(run('JSON.stringify(teamDraft['+(1-side)+'])'),other);
+ assert(run('new Set(teamDraft.flat().filter(char=>char!==null)).size===4&&teamDraft.flat().filter(char=>char!==null).every(char=>char!==EMPRESS_ID)'));
+ assert(run('teamDraft[0][1]===null&&teamDraft[1][2]===null'));
+}
 // Full simulations cover KO paths, transformations, revivals, and automatic OF.
 for(let n=0;n<20;n++){
  reseed(n+100);run(`teamMode=true;teamDraft=[[${n%49},${(n*3+37)%49},47],[${(n*7+48)%49},${(n*5+32)%49},45]];start()`);

@@ -40,8 +40,14 @@ function renderRelayHUD(){
  }).join('');
 }
 function randomizeRelay(side){
- if(!loaded)return false;const pool=roster.map((r,i)=>r.special?-1:i).filter(i=>i>=0);
- for(let id=0;id<2;id++)if(side!==0&&side!==1||side===id)teamDraft[id]=teamDraft[id].map(char=>char===null?null:pool[Math.floor(Math.random()*pool.length)]);
+ if(!loaded)return false;
+ const sides=side===0||side===1?[side]:[0,1];
+ const used=new Set(teamDraft.flatMap((team,id)=>sides.includes(id)?[]:team.filter(char=>char!==null)));
+ const pool=roster.map((r,i)=>i===EMPRESS_ID||r.special||r.opponentOnly||used.has(i)?-1:i).filter(i=>i>=0);
+ for(const id of sides)teamDraft[id]=teamDraft[id].map(char=>{
+  if(char===null)return null;
+  return pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+ });
  relayEmpressBackup=null;syncRelayEditor();reset();return true;
 }
 function toggleRelayEmpress(){
