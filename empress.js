@@ -78,7 +78,7 @@ function empShot(f,e,slotIndex,damage=40,offset=0,options={}){
 const EMPRESS_BEAM_COLORS=['#ffe7ad','#f7b0c4','#b8efff','#d4b8ff','#ffbb8e','#c4ffd1','#fff6c9','#8edfea','#f7bbef','#ffffff'];
 function empBeam(f,index){
  const slot=f.emp.slots[index],e=attackTarget(f),n=slot.uses++%10,c=EMPRESS_BEAM_COLORS[n],angle=Math.PI+n*Math.PI/9,point=f.emp.ofLeft>0?{x:f.x+Math.cos(angle)*85,y:f.y-70+Math.sin(angle)*70}:{x:f.x,y:f.y-30};
- if(n===2||n===9){hit(e,n===9?100:65,f,c);empVisual(f,'ray',point.x,point.y,e.x,e.y-30,n===9?16:8,index,.3);return}
+ if(n===2||n===9){slot.mysteryResolved=true;hit(e,n===9?100:65,f,c);empVisual(f,'ray',point.x,point.y,e.x,e.y-30,n===9?16:8,index,.3);return}
  const count=n===1||n===8?3:n===6?5:n===5?2:1;
  for(let j=0;j<count;j++)empShot(f,e,index,n===4?75:count>1?24:45,(j-(count-1)/2)*(n===6?.16:.12),{point,color:c,r:n===4?22:8,velocity:n===4?560:1000,homing:n===3||n===8,curve:n===7?1.1:0});
 }
@@ -96,7 +96,7 @@ function tickEmpressUnit(v,dt){
  if(isConcealed(e)&&!empHas(f,'sense'))return;
  if(v.empKind!=='guns'&&d>90){const travel=Math.min(d-85,270*dt);v.x=clamp(v.x+dx/d*travel,55,W-55);v.y=clamp(v.y+dy/d*travel,135,H-65)}
  v.mx=(v.x-v.prevX)/dt;v.my=(v.y-v.prevY)/dt;
- if(v.attackCd<=0){v.attackCd=v.empKind==='guns'?.5:.8;if(v.empKind==='guns')empShot(f,e,v.empSlot,18,0,{origin:v,velocity:1100});else if(d<150){hit(e,v.empKind==='clone'?18:26,f,'#e9c794',0,false,'direct',v);v.attack=.25;empVisual(f,'ray',v.x,v.y-25,e.x,e.y-25,3,v.empSlot,.2)}}
+ if(v.attackCd<=0){v.attackCd=v.empKind==='guns'?.5:.8;if(v.empKind==='guns')empShot(f,e,v.empSlot,18,0,{origin:v,velocity:1100});else if(d<150){slot.mysteryResolved=true;hit(e,v.empKind==='clone'?18:26,f,'#e9c794',0,false,'direct',v);v.attack=.25;empVisual(f,'ray',v.x,v.y-25,e.x,e.y-25,3,v.empSlot,.2)}}
 }
 function empAdvanceShot(s,dt){
  if(s.empSlot===undefined)return true;

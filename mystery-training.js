@@ -34,3 +34,27 @@ function initMysteryUI(){
   mysterySkill=value;reset();
  };
 }
+
+// Keep an action's movement and delayed follow-ups intact without extending its CT.
+let mysteryActionContext=null;
+function withMysteryAction(action,fn){
+ if(!action)return fn();
+ const previous=mysteryActionContext;mysteryActionContext=action;
+ try{return fn()}finally{mysteryActionContext=previous}
+}
+function mysteryActionBusy(f){
+ if(mysterySkill<0)return false;
+ if(f.dash||f.iceDash||f.windup>0)return true;
+ const action=f.mysteryAction;if(!action)return false;
+ return (action.motion||!action.started)&&events.some(event=>event.mysteryAction===action);
+}
+function mysteryCastBusy(f,i){
+ if(mysterySkill<0||i===3)return false;
+ if(mysteryActionBusy(f))return true;
+ const slot=f.char===EMPRESS_ID&&i===2&&mysterySkill===2?f.emp?.slots[1]:null;
+ return !!(slot&&!slot.mysteryResolved&&['beams','guns','adamant','clone','life'].includes(slot.key));
+}
+function resolveMysteryEmpressShot(shot){
+ const owner=fighters[shot.owner],slot=owner?.emp?.slots[shot.empSlot];
+ if(owner?.char===EMPRESS_ID&&slot?.token===shot.empToken)slot.mysteryResolved=true;
+}
