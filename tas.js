@@ -1,6 +1,6 @@
 'use strict';
 const TAS_ID=49;
-const TAS_PROFILE={key:'tas',name:'タス',grade:null,tier:'S',hidden:true,special:true,opponentOnly:false,maxHp:1600,code:'ORIGINAL SELF / MASS + TENTACLES',ability:'質量操作＋背中の触手 / 隠しキャラ・S',color:'#efc477',attack:.84,defense:.96,speed:1.05,overflow:true,overflowText:'120%ブラックホール',overflowDesc:'隠しキャラ。ランダム抽選には出現しない。プラスと同じ質量操作・移動・技CTに、基礎攻撃力・耐久力の強化と背中の触手による追撃が加わる。HP30%以下で1戦1回、120%ブラックホールを発動。吸引・圧縮の各ダメージが通常のブラックホールの1.2倍（基礎攻撃力による強化は別途適用）。相手本体・兵士・分身すべてが対象。',descs:['プラスと同じ軽量化ダッシュからの5連打。触手が追撃する。CT5.2秒。','プラスと同じ質量タックル。触手が噛みついて追撃する。CT7.5秒。','プラスと同じスリングショット・パンチ。背中の触手2本が続けて追撃する。CT11秒。']};
+const TAS_PROFILE={key:'tas',name:'タス',grade:null,tier:'S',hidden:true,special:true,opponentOnly:false,maxHp:1600,code:'ORIGINAL SELF / MASS + TENTACLES',ability:"質量操作＋触手",color:'#efc477',attack:.84,defense:.96,speed:1.05,overflow:true,overflowText:'120%ブラックホール',overflowDesc:"ランダム抽選には出現しない。質量操作と触手による追撃を使い、基礎攻撃力・耐久力が高い。HP30%以下で1戦1回、吸引・圧縮の威力が1.2倍のブラックホールを放つ。本体・兵士・分身すべてが対象。",descs:["軽量化ダッシュから5連打し、触手で追撃する。CT5.2秒。","質量を乗せたタックルから、触手で噛みついて追撃する。CT7.5秒。","スリングショット・パンチから、触手2本が続けて追撃する。CT11秒。"]};
 function tasTentacleStrike(f,e,damage,side=1){
  if(!running||!battleAlive(f)||!battleAlive(e)||f.petrified>0||f.frozen>0||f.wordStop>0||f.shadowMove>0||empControlBlocked(f)||isSilenced(f)||f.menouSeal>0)return false;
  if(Math.hypot(f.x-e.x,f.y-e.y)>310)return false;
