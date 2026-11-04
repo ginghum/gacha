@@ -85,7 +85,7 @@ const roster=[
  ,{key:'jekyll',name:'ジキル',code:'DISTANCE / TWIN SCISSORS',grade:4,ability:'ジキル⇄ハイド / 8秒交代・CTとOF共用',color:'#a9cc8e',attack:0.72,defense:1,speed:1.05,overflow:true,overflowRatio:.4,overflowText:'ここには届かない',overflowDesc:'8秒の戦闘時間ごとに人格が交代。HP・技1〜3の残りCT・1戦1回のOF使用権は共用。HP40%以下で生存していれば、ハイドからも即座にジキルへ交代し、自動OFで4秒間、相手の攻撃・OF・反射・継続ダメージ・状態異常が届かなくなる。ハイド自身はOFを使わない。使用後も8秒交代は続く。',descs:['ジキル「こっちに来ないで」：弱いハサミを2連投し、距離を取る。ハイド「逃げんなよ」：相手を間合いへ引き寄せ、ハサミで3連撃。共通CT6秒。','ジキル「離れてください！」：近くの相手を押し離して退避。ハイド「ぶった切る！」：一気に接近し、重いハサミの2連撃。共通CT8秒。','ジキル「切っちゃいますよ……」：3方向へハサミを投げて逃げ道を作る。ハイド「祭りは終わらねぇ」：相手を追いながら6連続で切り刻む。共通CT11秒。']}
 ];
 roster.push({key:'senichi',name:'センイチ',code:'MONEY EATER',grade:4,ability:'お金ゲージ / 食べて永続強化',color:'#f0cc68',attack:1,defense:1,speed:1,overflow:false,passiveLabel:'お金を食べて強化 / OFなし',overflowText:'商売繁盛',overflowDesc:'オーバーフロウなし。お金は0から開始し最大100。技1で25、技2で35貯まり、技3で全額食べる。累計消費100ごとに攻撃力+40%・防御力+15%・移動速度+10%（移動は最大+35%）。強化はバトル中永続、次の対戦ではリセット。',descs:['商品を投げて攻撃し、お金を25貯める。命中しなくても収入を得る。','接近して2連打し、お金を35貯める。命中しなくても収入を得る。','貯めたお金を全て食べ、攻撃・防御・移動速度を永続強化。お金が0の時は使用できない。']});
-roster.push({key:'itoguchi',name:'イトグチ',maxHp:2000,code:'CONCEPT ERASURE',grade:5,ability:'中央で迎撃 / 概念と物体を消滅させる',color:'#b6e5ef',attack:.9,defense:.85,speed:1,overflow:true,overflowRatio:.1,overflowText:'アルティメットフロウ',overflowDesc:'対戦開始8秒経過後、自身のHP10%以下（200以下）で自動発動するUF。1戦1回、発動直後の2秒間は無敵。対戦終了まで移動速度が3.5倍、技3のCTが0.1秒になる。発動時に技3の残りCTも0.1秒へ変更。開始8秒までは技1〜3・UFを使用できない。解禁後は相手とのHP差による制限はない。回避率の上昇はない。通常の体術は制限されない。UF前のオート行動は中央付近を歩いて位置取りしながら迎撃し、UF後は超高速で追撃する。',descs:['迫る飛び道具や突進へ反応し、半径500の広域消滅波で飛び道具を消す。射程内の相手へ衝撃を返す。初回は開始8秒で解禁、以後CT24秒。','相手の接近や包囲へ反応し、自分を中心とした半径430の消滅領域で相手・兵士・分身を迎撃。初回は開始8秒で解禁、以後CT32秒。','相手の技発動や離脱へ合わせ、射程680の消滅線を放つ。初回は開始8秒で解禁、以後CT40秒。UF発動後は一撃の威力を抑えたCT0.1秒の連射に変わるが、開始8秒での解禁条件は共通。']});
+roster.push({key:'itoguchi',name:'イトグチ',maxHp:2000,code:'CONCEPT ERASURE',grade:5,ability:'中央で迎撃 / 概念と物体を消滅させる',color:'#b6e5ef',attack:.9,defense:.85,speed:1,overflow:true,overflowRatio:.1,overflowText:'アルティメットフロウ',overflowDesc:'対戦開始8秒経過後、自身のHP10%以下（200以下）で自動発動するUF。1戦1回、発動直後の2秒間は無敵。対戦終了まで移動速度が3.5倍、技3のCTが0.1秒になる。発動時に技3の残りCTも0.1秒へ変更。開始8秒までは技1〜3・UFを使用できない。解禁後は相手とのHP差による制限はない。回避率の上昇はない。通常の体術は制限されない。UF前のオート行動は中央付近を歩いて位置取りしながら迎撃し、UF後は超高速で追撃する。',descs:['迫る飛び道具や突進へ反応し、半径500の広域消滅波で飛び道具を消す。射程内の相手へ衝撃を返す。初回は開始8秒で解禁、以後CT24秒。','相手の接近や包囲へ反応し、自分を中心とした半径430の消滅領域で相手・兵士・分身を迎撃。初回は開始8秒で解禁、以後CT32秒。','相手の技発動や離脱へ合わせ、射程680の消滅線を放つ。命中ごとに相手の技1〜3の残りCTを0.02秒延長する。初回は開始8秒で解禁、以後CT40秒。UF発動後は一撃の威力を抑えたCT0.1秒の連射に変わるが、開始8秒での解禁条件は共通。']});
 roster.push(EMPRESS_PROFILE);
 roster.push(TAS_PROFILE);
 // Fixed character tuning from the full-roster balance pass; independent of opponent, HP and random rolls.
@@ -428,7 +428,10 @@ function resolveItoguchiSkill(f,i,e){
   for(const target of crowdOverflowTargets(f.id)){if(!running)break;if(Math.hypot(target.x-f.x,target.y-f.y)<=ITOGUCHI_CONTROL.fieldRange+hurtRadius(target)){hit(target,160,f,c);erasureFX(target)}}
  }else if(Math.hypot(e.x-f.x,e.y-f.y)<=ITOGUCHI_CONTROL.rayRange){
   fx.push({kind:'itoguchiRay',x:f.x,y:f.y-30,tx:e.x,ty:e.y-30,c:'#ecfbff',life:f.ultimateFlow?.2:.4,max:f.ultimateFlow?.2:.4});
-  hit(e,f.ultimateFlow?15:105,f,'#ecfbff');erasureFX(e);
+  const target=selfSkillContext?.owner===f.id?f:e;
+  const landed=hit(e,f.ultimateFlow?15:105,f,'#ecfbff');
+  if(landed&&running&&battleAlive(target)&&!target.summon&&!target.phantom&&Array.isArray(target.cds))target.cds=target.cds.map(cd=>Math.max(0,cd)+.02);
+  erasureFX(e);
  }
 }
 function drawItoguchiControl(q,p){
