@@ -43,13 +43,13 @@ function withMysteryAction(action,fn){
  try{return fn()}finally{mysteryActionContext=previous}
 }
 function mysteryActionBusy(f){
- if(mysterySkill<0)return false;
+ if(mysterySkill<0&&!(f.randomMan&&f.ultimateFlow))return false;
  if(f.dash||f.iceDash||f.windup>0)return true;
  const action=f.mysteryAction;if(!action)return false;
  return (action.motion||!action.started)&&events.some(event=>event.mysteryAction===action);
 }
 function mysteryCastBusy(f,i){
- if(mysterySkill<0||i===3)return false;
+ if(mysterySkill<0&&!(f.randomMan&&f.ultimateFlow)||i===3)return false;
  if(mysteryActionBusy(f))return true;
  const slot=f.char===EMPRESS_ID&&i===2&&mysterySkill===2?f.emp?.slots[1]:null;
  return !!(slot&&!slot.mysteryResolved&&['beams','guns','adamant','clone','life'].includes(slot.key));

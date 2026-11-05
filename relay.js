@@ -97,7 +97,7 @@ function tickRelayTransition(dt){
   }
   fighters[id]=f;log(nameOf(f)+'（P'+(id+1)+'）が入場！');ring(f.x,f.y-25,roster[char].color,65,'renew',.8);
  }
- renderMatchup();renderRelayHUD();running=true;$('status').textContent='FIGHTING';updateHUD();
+ renderMatchup();syncRandomManInfo();renderRelayHUD();running=true;$('status').textContent='FIGHTING';updateHUD();
  if(fighters.some(f=>!battleAlive(f)))finish();else{call('BATTLE CONTINUE','#efe2ad');playSE('start')}
 }
 function finishRelayDraw(){
